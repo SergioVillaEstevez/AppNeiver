@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.proyectofinal.redgame.databinding.FragmentJuegosBinding
 import com.proyectofinal.redgame.ui.juegos.adapter.GameAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,9 +50,10 @@ class GameFragment : Fragment() {
     private fun initUiState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                juegosViewModel.game.collect() {
+                juegosViewModel.game.collect() {games->
+                    println("Número de juegos recibidos: ${games.size}")
 
-                    juegosAdapter.updateList(it)
+                    juegosAdapter.updateList(games)
 
                 }
             }
@@ -60,8 +62,9 @@ class GameFragment : Fragment() {
     private fun initRecyclerView() {
         juegosAdapter = GameAdapter()
 
+
         binding.recyclerViewJuegos.apply {
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = LinearLayoutManager(context)
             adapter = juegosAdapter
 
         }

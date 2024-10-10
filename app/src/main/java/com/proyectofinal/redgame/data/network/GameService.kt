@@ -1,6 +1,5 @@
 package com.proyectofinal.redgame.data.network
 
-import android.annotation.SuppressLint
 import android.util.Log
 import com.proyectofinal.redgame.core.RetrofitHelper
 import com.proyectofinal.redgame.data.model.GameModel
@@ -16,7 +15,7 @@ class GameService {
         return withContext(Dispatchers.IO) {
             try {
                 val response = retrofit.create(GameApiClient::class.java)
-                    .getAllGames("ea5710fd888a4d6b82220d407aa759e8")
+                    .getAllGames("ea5710fd888a4d6b82220d407aa759e8", page = 1, pageSize = 40)
 
                 Log.d("GameService", "Response: ${response.body()}")
                 if (response.isSuccessful) {

@@ -15,6 +15,8 @@ class GameViewHolder (view: View) : RecyclerView.ViewHolder(view){
         val context= binding.tvNombreJuego.context
 
         binding.tvNombreJuego.text = gameModel.name
+        binding.tvValoracion.text= gameModel.rating.toString()
+
         Glide.with(binding.ivGame.context).load(gameModel.backgroundImage).into(binding.ivGame)
 
     }

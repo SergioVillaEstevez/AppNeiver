@@ -7,5 +7,16 @@ import retrofit2.http.Query
 
 interface GameApiClient {
     @GET("games")
-    suspend fun getAllGames(@Query("key") apiKey: String): Response<GameResponse>
+    suspend fun getAllGames(
+
+        @Query("key") apiKey: String,
+        @Query("page") page: Int,
+        @Query("page_size") pageSize: Int,
+
+
+
+
+    ): Response<GameResponse>
+
+
 }

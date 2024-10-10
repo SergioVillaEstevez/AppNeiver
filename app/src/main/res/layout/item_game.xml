@@ -7,11 +7,11 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivGame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         tools:background="@color/gold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintTop_toTopOf="parent"
         />
 
@@ -19,12 +19,48 @@
         android:id="@+id/tvNombreJuego"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="hola"
+        tools:text="titulo"
+        tools:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/ivGame"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivGame"
-        android:textColor="@color/secondary"
-        android:textSize="20sp"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20sp"
+
+
+        android:textColor="@color/accent"
+        android:textSize="18sp"
+        tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/tvValoracion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="4.0"
+        tools:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/ivGame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTituloValoracion"
+        android:layout_marginTop="20sp"
+
+
+        android:textColor="#4CAF50"
+        android:textSize="18sp"
+        tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/tvTituloValoracion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Valoración:"
+
+        tools:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/ivGame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvNombreJuego"
+        android:layout_marginTop="20sp"
+
+
+        android:textColor="@color/gold"
+        android:textSize="18sp"
+        tools:ignore="MissingConstraints" />
 
 
 
