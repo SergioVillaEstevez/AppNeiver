@@ -6,18 +6,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitHelper {
 
 
+    fun getRetrofit(): Retrofit {
+
+        return Retrofit.Builder()
+            .baseUrl("https://api.rawg.io/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
 
-        fun getRetrofit(): Retrofit {
+    }
 
-            return Retrofit.Builder()
-                .baseUrl("https://api.rawg.io/api/games?key=ea5710fd888a4d6b82220d407aa759e8")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-
-        }
-
-
+//clave ea5710fd888a4d6b82220d407aa759e8
 
 }
