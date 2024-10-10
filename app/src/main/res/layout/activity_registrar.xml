@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    tools:context=".login.ui.registrar.RegistrarActivity">
+    <TextView
+        android:id="@+id/tvTittleAppRegistrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/app_name"
+        android:textColor="@color/gold"
+        android:textSize="60sp"
+        android:fontFamily="@font/dancing"
+        android:layout_marginTop="20dp"/>
+
+
+    <EditText
+        android:id="@+id/etNuevoUsuario"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/button_border"
+        android:hint="Nombre de usuario"
+        android:padding="15sp"
+        android:textColor="@color/accent"
+        android:textColorHint="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTittleAppRegistrar" />
+    <EditText
+        android:id="@+id/etNombreCompleto"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_border"
+        android:hint="Nombre completo"
+
+        android:padding="15sp"
+        android:textColor="@color/accent"
+        android:textColorHint="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etNuevoUsuario" />
+    <EditText
+        android:id="@+id/etCorreoElectronico"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_border"
+        android:hint="Correo electronico"
+        android:padding="15sp"
+        android:textColor="@color/accent"
+        android:textColorHint="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etNombreCompleto" />
+    <EditText
+        android:id="@+id/etNuevaPassword"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_border"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:padding="15sp"
+        android:textColor="@color/accent"
+        android:textColorHint="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etCorreoElectronico" />
+
+    <EditText
+        android:id="@+id/etRepetirPassword"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_border"
+        android:hint="Repetir nueva contraseña"
+        android:inputType="textPassword"
+        android:padding="15sp"
+        android:textColor="@color/accent"
+        android:textColorHint="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etNuevaPassword" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCrearMiCuenta"
+        android:layout_width="350dp"
+        android:text="CREAR MI CUENTA"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_border_radius"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etRepetirPassword"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:id="@+id/tvTienesCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       app:layout_constraintTop_toBottomOf="@id/btnCrearMiCuenta"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="#A29E9E"
+        android:text="¿Ya tienes cuenta?"/>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnIrIniciarSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTienesCuenta"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:text="inicia sesión"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

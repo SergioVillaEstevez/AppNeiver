@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/perfilFragment"
+        android:title="@string/perfil"
+        android:icon="@drawable/ic_perfil"/>
+
+    <item android:id="@+id/juegosFragment"
+        android:title="@string/juegos"
+        android:icon="@drawable/ic_juegos"/>
+
+
+    <item android:id="@+id/foroFragment"
+        android:title="@string/foro"
+        android:icon="@drawable/ic_foro"/>
+
+</menu>

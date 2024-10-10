@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">NeiverHub</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!--bottomBarMenu -->
+
+    <string name="perfil">Perfil</string>
+    <string name="juegos">Juegos</string>
+    <string name="foro">Chat</string>
+
+    <!--Login Home-->
+    <string name="crear_cuenta">CREAR CUENTA</string>
+    <string name="iniciar_sesi_n">INICIAR SESIÓN</string>
+
+
+</resources>
