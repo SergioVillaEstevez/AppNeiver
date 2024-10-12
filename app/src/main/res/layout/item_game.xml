@@ -8,9 +8,10 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivGame"
         android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         tools:background="@color/gold"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="10dp"
 
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -21,10 +22,11 @@
         android:layout_height="wrap_content"
         tools:text="titulo"
         tools:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@id/ivGame"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/ivGame"
         android:layout_marginTop="20sp"
+        android:layout_marginStart="10dp"
 
 
         android:textColor="@color/accent"
@@ -36,9 +38,12 @@
         android:layout_height="wrap_content"
         tools:text="4.0"
         tools:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@id/ivGame"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTituloValoracion"
+        app:layout_constraintStart_toEndOf="@+id/tvTituloValoracion"
+        app:layout_constraintTop_toBottomOf="@id/tvNombreJuego"
+        android:layout_marginStart="20sp"
+
+
+
         android:layout_marginTop="20sp"
 
 
@@ -52,9 +57,13 @@
         android:text="Valoración:"
 
         tools:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@id/ivGame"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvNombreJuego"
+        app:layout_constraintTop_toBottomOf="@+id/tvNombreJuego"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="10dp"
+
+
+
+
         android:layout_marginTop="20sp"
 
 

@@ -25,7 +25,7 @@ class GameViewModel @Inject constructor(): ViewModel() {
     private fun fetchGames() {
         viewModelScope.launch {
             try {
-                val gameList = gameService.getGames()
+                val gameList = gameService.getGames(page = 1, pageSize = 10)
                 _game.value = gameList
                 Log.d("GameViewModel", "Games fetched: $gameList")
 

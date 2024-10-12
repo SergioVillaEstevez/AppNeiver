@@ -1,17 +1,23 @@
 package com.proyectofinal.redgame.ui.juegos.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.data.model.GameModel
 
-class GameAdapter(private var gameList: List<GameModel> = emptyList()) :
+class GameAdapter(private var gameList:MutableList<GameModel> = mutableListOf()) :
     RecyclerView.Adapter<GameViewHolder>() {
-
+    fun addGames(newGames: List<GameModel>) {
+        val startPosition = gameList.size
+        gameList.addAll(newGames)
+        println("los juegos son " + newGames)
+        notifyItemRangeInserted(startPosition, newGames.size)  // Notificar al RecyclerView
+    }
         fun updateList(list: List<GameModel>){
-
-            gameList = list
+            gameList.clear()
+            gameList.addAll(list)
             notifyDataSetChanged()
         }
 

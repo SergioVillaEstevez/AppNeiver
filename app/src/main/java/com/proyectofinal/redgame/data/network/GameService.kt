@@ -11,11 +11,11 @@ class GameService {
     private val retrofit = RetrofitHelper.getRetrofit()
 
 
-    suspend fun getGames(): List<GameModel> {
+    suspend fun getGames(page:Int,pageSize:Int): List<GameModel> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = retrofit.create(GameApiClient::class.java)
-                    .getAllGames("ea5710fd888a4d6b82220d407aa759e8", page = 1, pageSize = 40)
+                    .getAllGames("ea5710fd888a4d6b82220d407aa759e8", page, pageSize)
 
                 Log.d("GameService", "Response: ${response.body()}")
                 if (response.isSuccessful) {
