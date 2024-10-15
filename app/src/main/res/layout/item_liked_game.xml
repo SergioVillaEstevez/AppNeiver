@@ -45,13 +45,14 @@
                 android:textSize="18sp" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnMeGusta"
+                android:id="@+id/btnEliminar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/button_border"
-                android:text="+"
+                android:background="@drawable/bottom_dislike"
+
+                android:text="eliminiar"
                 android:textColor="@color/secondary"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@id/ivGame"
@@ -67,7 +68,7 @@
                 android:text="Información"
                 android:textColor="@color/secondary"
                 android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/btnMeGusta"
+                app:layout_constraintStart_toEndOf="@id/btnEliminar"
                 app:layout_constraintTop_toTopOf="@id/ivGame" />
 
             <TextView

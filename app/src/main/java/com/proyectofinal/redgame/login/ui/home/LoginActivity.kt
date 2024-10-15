@@ -1,12 +1,11 @@
 package com.proyectofinal.redgame.login.ui.home
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.proyectofinal.redgame.databinding.ActivityLoginBinding
 import com.proyectofinal.redgame.login.ui.inicio.InicioSesionActivity
 import com.proyectofinal.redgame.login.ui.registrar.RegistrarActivity
-import com.proyectofinal.redgame.ui.home.MainActivity
 
 class LoginActivity : AppCompatActivity() {
 

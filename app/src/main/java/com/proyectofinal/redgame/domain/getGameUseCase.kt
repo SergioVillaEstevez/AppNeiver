@@ -5,7 +5,7 @@ import com.proyectofinal.redgame.data.model.GameModel
 
 class getGameUseCase {
 
-    private val repository= GameRepository()
+    private val repository = GameRepository()
 
     suspend operator fun invoke(): List<GameModel>? = repository.getAllGames()
 

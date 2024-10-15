@@ -12,15 +12,21 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.data.network.GameService
 import com.proyectofinal.redgame.databinding.FragmentJuegosBinding
 import com.proyectofinal.redgame.ui.juegos.adapter.GameAdapter
+import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 @AndroidEntryPoint
 class GameFragment : Fragment() {
 
+    private val perfilViewModel: PerfilViewModel by viewModels()
 
     private var _binding: FragmentJuegosBinding? = null
     private val binding get() = _binding!!
@@ -30,10 +36,15 @@ class GameFragment : Fragment() {
     private lateinit var juegosAdapter: GameAdapter
     private lateinit var gameService: GameService
 
+    private val db = FirebaseFirestore.getInstance()
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid // Obtener el ID del usuario
+
+
+
     private var currentPage = 2
     private var pageSize = 10
 
-    var isLoading= false // comprobar si estar cargando datos
+    var isLoading = false // comprobar si estar cargando datos
 
 
     override fun onCreateView(
@@ -61,6 +72,10 @@ class GameFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 juegosViewModel.game.collect() { games ->
                     println("Número de juegos recibidos: ${games.size}")
+                    val likedGamesStates = fetchLikedGamesFromFirestore() // Método que debes implementar
+                    games.forEach { game ->
+                        game.isLiked = likedGamesStates.contains(game.id) // Asignar el estado
+                    }
 
                     juegosAdapter.updateList(games)
 
@@ -70,17 +85,15 @@ class GameFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        juegosAdapter = GameAdapter(mutableListOf())
+        juegosAdapter = GameAdapter(mutableListOf(),perfilViewModel)
         gameService = GameService()
 
 
         binding.recyclerViewJuegos.apply {
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = LinearLayoutManager(context)
             adapter = juegosAdapter
 
         }
-
-
 
 
         //scrollistener
@@ -89,17 +102,17 @@ class GameFragment : Fragment() {
 
     }
 
-// FUNCION PARA CARGAR JUEGOS EN EL FRAGMENT
+    // FUNCION PARA CARGAR JUEGOS EN EL FRAGMENT
     private fun loadGames() {
-        if(isLoading) return
-        isLoading=true
+        if (isLoading) return
+        isLoading = true
 
         lifecycleScope.launch {
             try {
                 val games = gameService.getGames(currentPage, pageSize)
                 juegosAdapter.addGames(games)  // Añadir los juegos al adapter
                 currentPage++
-                isLoading=false// Incrementar la página para la próxima solicitud
+                isLoading = false// Incrementar la página para la próxima solicitud
             } catch (e: Exception) {
                 // Manejar errores aquí (por ejemplo, mostrar un mensaje de error)
                 println("Error al cargar los juegos: ${e.message}")
@@ -107,26 +120,38 @@ class GameFragment : Fragment() {
         }
     }
 
-// PETICION AL FINAL DEL FRAGMENT PARA CARGAR  MAS JUEGOS EN EL FRAGMENT
+    // PETICION AL FINAL DEL FRAGMENT PARA CARGAR  MAS JUEGOS EN EL FRAGMENT
     private fun setupScrollListener() {
 
-        binding.recyclerViewJuegos.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.recyclerViewJuegos.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
 
-                val layoutManager = recyclerView.layoutManager as GridLayoutManager
-                val totalItemCount= layoutManager.itemCount
-                val lastVisibleItemPosition= layoutManager.findLastVisibleItemPosition()
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val totalItemCount = layoutManager.itemCount
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
 
-                if(lastVisibleItemPosition == totalItemCount -1){
+                if (lastVisibleItemPosition == totalItemCount - 1) {
 
                     loadGames()
                 }
             }
         })
 
+    }
+
+    private suspend fun fetchLikedGamesFromFirestore(): List<String> {
+        val likedGamesIds = mutableListOf<String>()
+        val userLikedGamesRef = db.collection("JuegosGuardados").document(userId ?: "default_user")
+
+        val document = userLikedGamesRef.get().await() // Usando corutinas
+        if (document.exists()) {
+            val gamesData = document.get("games") as? List<Map<String, Any>> ?: emptyList()
+            likedGamesIds.addAll(gamesData.map { it["id"] as String })
+        }
+        return likedGamesIds
     }
 
 }

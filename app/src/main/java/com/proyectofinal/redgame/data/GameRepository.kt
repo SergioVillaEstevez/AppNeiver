@@ -6,11 +6,11 @@ import com.proyectofinal.redgame.data.network.GameService
 
 class GameRepository {
 
-    private val api= GameService()
+    private val api = GameService()
 
-    suspend fun getAllGames():List<GameModel>{
+    suspend fun getAllGames(): List<GameModel> {
 
-        val response= api.getGames(page = 1, pageSize = 10)
+        val response = api.getGames(page = 1, pageSize = 10)
 
         GameProvider.games = response
 

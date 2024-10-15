@@ -20,4 +20,9 @@
         android:name="com.proyectofinal.redgame.ui.foro.foroFragment"
         android:label="fragment_foro"
         tools:layout="@layout/fragment_foro" />
+    <fragment
+        android:id="@+id/juegosGuardadosFragment2"
+        android:name="com.proyectofinal.redgame.ui.juegosGuardados.JuegosGuardadosFragment"
+        android:label="fragment_juegos_guardados"
+        tools:layout="@layout/fragment_juegos_guardados" />
 </navigation>
