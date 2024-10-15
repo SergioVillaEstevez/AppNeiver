@@ -21,16 +21,15 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
 
-  <androidx.appcompat.widget.AppCompatButton
-      android:id="@+id/btnVerJuegosGuardados"
+
+  <Button
+      android:id="@+id/btnVerTodo"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="120dp"
-      android:layout_marginTop="48dp"
-      android:background="@null"
-      android:text="Ver todos"
-      android:textColor="@color/white"
-      app:layout_constraintStart_toEndOf="@id/tvJuegosGuardados"
+      android:layout_marginStart="12dp"
+      android:layout_marginTop="40dp"
+      android:text="ver todo"
+      app:layout_constraintStart_toEndOf="@+id/tvJuegosGuardados"
       app:layout_constraintTop_toTopOf="parent" />
 
   <androidx.recyclerview.widget.RecyclerView

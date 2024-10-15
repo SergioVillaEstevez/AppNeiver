@@ -14,14 +14,18 @@
         android:id="@+id/perfilFragment"
         android:name="com.proyectofinal.redgame.ui.perfil.perfilFragment"
         android:label="fragment_perfil"
-        tools:layout="@layout/fragment_perfil" />
+        tools:layout="@layout/fragment_perfil" >
+        <action
+            android:id="@+id/action_perfilFragment_to_juegosGuardadosFragment"
+            app:destination="@id/juegosGuardadosFragment" />
+    </fragment>
     <fragment
         android:id="@+id/foroFragment"
         android:name="com.proyectofinal.redgame.ui.foro.foroFragment"
         android:label="fragment_foro"
         tools:layout="@layout/fragment_foro" />
     <fragment
-        android:id="@+id/juegosGuardadosFragment2"
+        android:id="@+id/juegosGuardadosFragment"
         android:name="com.proyectofinal.redgame.ui.juegosGuardados.JuegosGuardadosFragment"
         android:label="fragment_juegos_guardados"
         tools:layout="@layout/fragment_juegos_guardados" />

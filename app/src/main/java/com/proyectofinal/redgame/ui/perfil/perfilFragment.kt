@@ -10,18 +10,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.data.model.GameModel
-import com.proyectofinal.redgame.data.network.GameService
 import com.proyectofinal.redgame.databinding.FragmentPerfilBinding
 import com.proyectofinal.redgame.ui.juegos.GameViewModel
-import com.proyectofinal.redgame.ui.juegos.adapter.GameAdapter
 import com.proyectofinal.redgame.ui.perfil.adapter.PerfilAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
+@Suppress("UNREACHABLE_CODE")
 @AndroidEntryPoint
 class perfilFragment : Fragment() {
 
@@ -36,14 +36,23 @@ class perfilFragment : Fragment() {
     private val gameViewModel: GameViewModel by viewModels()
 
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPerfilBinding.inflate(layoutInflater, container, false)
+
+
+
+
+        binding.btnVerTodo.setOnClickListener(){
+            println("hola mundo")
+            findNavController().navigate(R.id.action_perfilFragment_to_juegosGuardadosFragment)
+        }
+
         return binding.root
+
+
 
 
     }
@@ -55,48 +64,46 @@ class perfilFragment : Fragment() {
         initRecyclerView()
         observeLikedGame()
         perfilViewModel.fetchLikedGames(gameViewModel)
+
+
+
     }
 
     private fun initRecyclerView() {
-        perfilAdapter = PerfilAdapter(mutableListOf(),perfilViewModel)
+        perfilAdapter = PerfilAdapter(mutableListOf(), perfilViewModel)
 
         binding.recyclerViewPerfil.apply {
 
-            layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-            adapter= perfilAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = perfilAdapter
         }
 
     }
 
 
-        private fun observeLikedGame(){
+    private fun observeLikedGame() {
 
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED){
-                    perfilViewModel.likedGame.collect(){likedGames->
-                        Log.d("PerfilFragment", "Liked games count: ${likedGames.size}")
-                        perfilAdapter.updateList(likedGames)
-                        updateButtonStatesInGameViewModel(likedGames)
-                    }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                perfilViewModel.likedGame.collect() { likedGames ->
+                    Log.d("PerfilFragment", "Liked games count: ${likedGames.size}")
+                    perfilAdapter.updateList(likedGames)
+                    updateButtonStatesInGameViewModel(likedGames)
                 }
             }
         }
+    }
+
     private fun updateButtonStatesInGameViewModel(likedGames: List<GameModel>) {
         likedGames.forEach { likedGame ->
             gameViewModel.getGameList().find { it.id == likedGame.id }?.isLiked = true
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // Limpia el binding para evitar fugas de memoria
     }
-
-
-
-
-
-
-
 
 
 }
