@@ -1,9 +1,11 @@
 package com.proyectofinal.redgame.ui.juegos
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.proyectofinal.redgame.data.model.GameModel
+import com.proyectofinal.redgame.data.model.GameProvider
 import com.proyectofinal.redgame.data.network.GameService
 import com.proyectofinal.redgame.databinding.FragmentJuegosBinding
 import com.proyectofinal.redgame.ui.juegos.adapter.GameAdapter
@@ -35,6 +38,11 @@ class GameFragment : Fragment() {
 
     private lateinit var juegosAdapter: GameAdapter
     private lateinit var gameService: GameService
+
+    private var gameMutableList: MutableList<GameModel> = GameProvider.games.toMutableList()
+
+
+
 
     private val db = FirebaseFirestore.getInstance()
     private val userId = FirebaseAuth.getInstance().currentUser?.uid // Obtener el ID del usuario
@@ -59,11 +67,18 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initUi()
-    }
+
+
+        }
+
+
+
 
     private fun initUi() {
         initUiState()
+
         initRecyclerView()
     }
 
@@ -72,7 +87,8 @@ class GameFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 juegosViewModel.game.collect() { games ->
                     println("Número de juegos recibidos: ${games.size}")
-                    val likedGamesStates = fetchLikedGamesFromFirestore() // Método que debes implementar
+                    val likedGamesStates = fetchLikedGamesFromFirestore()
+
                     games.forEach { game ->
                         game.isLiked = likedGamesStates.contains(game.id) // Asignar el estado
                     }

@@ -26,6 +26,14 @@ class GameAdapter(private var gameList: MutableList<GameModel> = mutableListOf()
         gameList.clear()
         gameList.addAll(list)
         notifyDataSetChanged()
+
+    }
+    fun updateListFilter(newGames: List<GameModel>){
+
+        this.gameList= newGames.toMutableList()
+        notifyDataSetChanged()
+
+
     }
 
 
