@@ -39,7 +39,9 @@ class GameFragment : Fragment() {
     private lateinit var juegosAdapter: GameAdapter
     private lateinit var gameService: GameService
 
-    private var gameMutableList: MutableList<GameModel> = GameProvider.games.toMutableList()
+    private var allGames: List<GameModel> = emptyList()
+
+
 
 
 
@@ -67,17 +69,37 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initUi()
 
+        fun normalizeString(str: String): String {
+            return str.lowercase().replace(Regex("[^a-zA-Z0-9 ]"), "").trim()
+        }
+
+        binding.etFilter.addTextChangedListener { userFilter ->
+            val filterText = normalizeString(userFilter?.toString().orEmpty())
+            Log.i("Filter", "Texto ingresado: $filterText")
+
+            juegosViewModel.fetchGames(search = filterText )
 
         }
 
 
+    }
+
+//  Busqueda en la pagina 1 de 10 elementos
+//   val gameFiltered = juegosViewModel.getGameList().filter { gameModel ->
+//                normalizeString(gameModel.name).contains(filterText)
+//            }
+//            Log.i("Filter", "Juegos filtrados: ${gameFiltered.map { it.name }}")
+//            Log.i("Filter", "Todos los juegos: ${juegosViewModel.game.value.map { it.name }}") // Verifica todos los juegos
+//
+//
+//            juegosAdapter.updateListFilter(gameFiltered.toMutableList())
 
 
     private fun initUi() {
         initUiState()
+
 
         initRecyclerView()
     }
@@ -88,6 +110,7 @@ class GameFragment : Fragment() {
                 juegosViewModel.game.collect() { games ->
                     println("Número de juegos recibidos: ${games.size}")
                     val likedGamesStates = fetchLikedGamesFromFirestore()
+                    allGames=games.toMutableList()
 
                     games.forEach { game ->
                         game.isLiked = likedGamesStates.contains(game.id) // Asignar el estado
@@ -97,7 +120,16 @@ class GameFragment : Fragment() {
 
                 }
             }
+
+
+
         }
+
+
+
+
+
+
     }
 
     private fun initRecyclerView() {

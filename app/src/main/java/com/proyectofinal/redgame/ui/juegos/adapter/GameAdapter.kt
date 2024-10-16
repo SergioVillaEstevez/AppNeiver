@@ -28,13 +28,16 @@ class GameAdapter(private var gameList: MutableList<GameModel> = mutableListOf()
         notifyDataSetChanged()
 
     }
-    fun updateListFilter(newGames: List<GameModel>){
-
-        this.gameList= newGames.toMutableList()
-        notifyDataSetChanged()
 
 
-    }
+    fun updateListFilter(newGames: MutableList<GameModel>) {
+            gameList.clear() // Limpia la lista actual
+            gameList.addAll(newGames) // Agrega los nuevos elementos filtrados
+            notifyDataSetChanged() // Notifica que los datos han cambiado
+        }
+
+
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {

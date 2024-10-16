@@ -13,22 +13,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GameViewModel @Inject constructor() : ViewModel() {
-
+    private var originalGameList: List<GameModel> = emptyList()
     private var _game = MutableStateFlow<List<GameModel>>(emptyList())
 
     val game: StateFlow<List<GameModel>> = _game
 
+    private lateinit var searchQuery: String
+
     private val gameService = GameService()
 
     init {
-        fetchGames()
+        fetchGames("")
     }
 
-    private fun fetchGames() {
+  fun fetchGames( search: String) {
         viewModelScope.launch {
             try {
-                val gameList = gameService.getGames(page = 1, pageSize = 10)
+                val gameList = gameService.getGames(page = 1, pageSize = 10,search= search )
                 _game.value = gameList
+                originalGameList=gameList
                 Log.d("GameViewModel", "Games fetched: $gameList")
 
             } catch (e: Exception) {

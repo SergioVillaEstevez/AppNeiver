@@ -8,9 +8,10 @@ class GameRepository {
 
     private val api = GameService()
 
-    suspend fun getAllGames(): List<GameModel> {
+    suspend fun getAllGames(search:String=""): List<GameModel> {
 
-        val response = api.getGames(page = 1, pageSize = 10)
+
+        val response = api.getGames(page = 1, pageSize = 10, search = "")
 
         GameProvider.games = response
 

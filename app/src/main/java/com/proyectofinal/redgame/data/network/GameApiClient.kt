@@ -12,6 +12,7 @@ interface GameApiClient {
         @Query("key") apiKey: String,
         @Query("page") page: Int,
         @Query("page_size") pageSize: Int,
+        @Query("search") search: String = ""
 
 
 
