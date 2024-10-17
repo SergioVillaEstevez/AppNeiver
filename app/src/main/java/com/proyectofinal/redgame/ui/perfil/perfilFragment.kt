@@ -16,7 +16,8 @@ import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.databinding.FragmentPerfilBinding
 import com.proyectofinal.redgame.ui.juegos.GameViewModel
-import com.proyectofinal.redgame.ui.perfil.adapter.PerfilAdapter
+import com.proyectofinal.redgame.ui.perfil.adapter.juegosGuardados.PerfilAdapter
+import com.proyectofinal.redgame.ui.perfil.adapter.recomendaciones.RecomendacionAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -29,6 +30,7 @@ class perfilFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var perfilAdapter: PerfilAdapter
+    private lateinit var recomendacionAdapter: RecomendacionAdapter
 
 
     private val perfilViewModel: PerfilViewModel by viewModels()
@@ -63,7 +65,9 @@ class perfilFragment : Fragment() {
 
         initRecyclerView()
         observeLikedGame()
+        observeTopValoracionJuego()
         perfilViewModel.fetchLikedGames(gameViewModel)
+        perfilViewModel.fetchTopValoracionJuegos()
 
 
 
@@ -72,14 +76,37 @@ class perfilFragment : Fragment() {
     private fun initRecyclerView() {
         perfilAdapter = PerfilAdapter(mutableListOf(), perfilViewModel)
 
-        binding.recyclerViewPerfil.apply {
+        recomendacionAdapter= RecomendacionAdapter(mutableListOf(),perfilViewModel)
+
+        binding.recyclerViewPerfilRecomendaciones.apply {
+            layoutManager= LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+            adapter= recomendacionAdapter
+        }
+
+
+        binding.recyclerViewPerfilJuegosGuardados.apply {
 
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = perfilAdapter
         }
 
     }
+    private fun observeTopValoracionJuego(){
 
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                perfilViewModel.topValoracionJuego.collect(){ topValoracionJuego->
+
+
+                    recomendacionAdapter.updateListRecomendacion(topValoracionJuego)
+
+                }
+            }
+        }
+
+
+
+    }
 
     private fun observeLikedGame() {
 

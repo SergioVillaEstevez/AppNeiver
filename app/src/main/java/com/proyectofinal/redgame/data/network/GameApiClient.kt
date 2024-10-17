@@ -1,5 +1,6 @@
 package com.proyectofinal.redgame.data.network
 
+import com.google.common.collect.Ordering
 import com.proyectofinal.redgame.data.model.GameResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -12,7 +13,8 @@ interface GameApiClient {
         @Query("key") apiKey: String,
         @Query("page") page: Int,
         @Query("page_size") pageSize: Int,
-        @Query("search") search: String = ""
+        @Query("search") search: String = "",
+        @Query("ordering") ordering: String
 
 
 

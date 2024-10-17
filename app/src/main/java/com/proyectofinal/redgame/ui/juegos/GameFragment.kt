@@ -157,7 +157,7 @@ class GameFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                val games = gameService.getGames(currentPage, pageSize)
+                val games = gameService.getGames(currentPage, pageSize, ordering = "")
                 juegosAdapter.addGames(games)  // Añadir los juegos al adapter
                 currentPage++
                 isLoading = false// Incrementar la página para la próxima solicitud

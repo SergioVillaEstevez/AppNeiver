@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 class GameViewModel @Inject constructor() : ViewModel() {
     private var originalGameList: List<GameModel> = emptyList()
-    private var _game = MutableStateFlow<List<GameModel>>(emptyList())
 
+    private var _game = MutableStateFlow<List<GameModel>>(emptyList())
     val game: StateFlow<List<GameModel>> = _game
 
     private lateinit var searchQuery: String
@@ -29,7 +29,7 @@ class GameViewModel @Inject constructor() : ViewModel() {
   fun fetchGames( search: String) {
         viewModelScope.launch {
             try {
-                val gameList = gameService.getGames(page = 1, pageSize = 10,search= search )
+                val gameList = gameService.getGames(page = 1, pageSize = 10,search= search, ordering = "" )
                 _game.value = gameList
                 originalGameList=gameList
                 Log.d("GameViewModel", "Games fetched: $gameList")

@@ -9,18 +9,18 @@
 
   <!-- Título de Juegos Guardados -->
 
+
   <TextView
       android:id="@+id/tvJuegosGuardados"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="4dp"
-      android:layout_marginTop="20dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="28dp"
       android:text="Tus juegos guardados"
       android:textColor="@color/gold"
       android:textSize="18sp"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
-
 
   <androidx.appcompat.widget.AppCompatButton
       android:id="@+id/btnVerTodo"
@@ -36,7 +36,7 @@
       app:layout_constraintTop_toTopOf="parent" />
 
   <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/recyclerViewPerfil"
+      android:id="@+id/recyclerViewPerfilJuegosGuardados"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="20dp"
@@ -48,19 +48,43 @@
   </androidx.recyclerview.widget.RecyclerView>
 
   <TextView
-    android:id="@+id/tvRecomendados"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-  android:textColor="@color/gold"
-  app:layout_constraintTop_toBottomOf="@+id/recyclerViewPerfil"
-  app:layout_constraintStart_toStartOf="parent"
-  android:text="Recomendados"
-  android:textSize="18dp"
-  />
+      android:id="@+id/tvRecomendados"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="24dp"
+      android:text="Recomendados por valoración"
+      android:textColor="@color/gold"
+      android:textSize="18dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/recyclerViewPerfilJuegosGuardados" />
 
 
+  <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/btnVerTodoRecomendado"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
 
-   <!-- 0dp para que use restricciones -->
+      android:layout_marginStart="56dp"
+      android:layout_marginBottom="8dp"
+      android:background="@null"
+      android:text="ver todos"
+      android:textColor="@color/white"
+      android:textSize="10dp"
+      app:layout_constraintBottom_toTopOf="@id/recyclerViewPerfilRecomendaciones"
+      app:layout_constraintStart_toEndOf="@+id/tvRecomendados" />
+
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recyclerViewPerfilRecomendaciones"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/tvRecomendados">
+
+  </androidx.recyclerview.widget.RecyclerView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

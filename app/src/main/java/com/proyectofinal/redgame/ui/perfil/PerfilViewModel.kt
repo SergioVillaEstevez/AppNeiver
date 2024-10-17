@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.data.model.GameProvider
 import com.proyectofinal.redgame.data.model.LikedGame
+import com.proyectofinal.redgame.data.network.GameService
 import com.proyectofinal.redgame.ui.juegos.GameViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +21,11 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
 
     private var _likedGame = MutableStateFlow<List<GameModel>>(emptyList())
     val likedGame: StateFlow<List<GameModel>> = _likedGame
+
+    private var _topValoracionJuego = MutableStateFlow<List<GameModel>>(emptyList())
+    val topValoracionJuego: StateFlow<List<GameModel>> = _topValoracionJuego
+
+    private var gameService = GameService()
 
     private val db = FirebaseFirestore.getInstance()
     private val userId = FirebaseAuth.getInstance().currentUser?.uid // Obtener el ID del usuario
@@ -47,7 +53,8 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
                 _likedGame.value = currentList // Actualiza el estado visual en la UI
 
                 // Guardar en Firestore
-                val userLikedGamesRef = db.collection("JuegosGuardados").document(userId ?: "default_user")
+                val userLikedGamesRef =
+                    db.collection("JuegosGuardados").document(userId ?: "default_user")
 
                 userLikedGamesRef.set(mapOf("games" to currentList.map {
                     mapOf(
@@ -73,7 +80,15 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
     private fun saveLikedGamesToFirestore(games: List<GameModel>) {
         val userLikedGamesRef = db.collection("JuegosGuardados").document(userId ?: "default_user")
 
-        userLikedGamesRef.set(mapOf("games" to games.map { mapOf("id" to it.id, "name" to it.name, "isLiked" to it.isLiked, "background_image" to it.backgroundImage, "rating" to it.rating) }))
+        userLikedGamesRef.set(mapOf("games" to games.map {
+            mapOf(
+                "id" to it.id,
+                "name" to it.name,
+                "isLiked" to it.isLiked,
+                "background_image" to it.backgroundImage,
+                "rating" to it.rating
+            )
+        }))
             .addOnSuccessListener {
                 println("Lista de juegos 'gustados' guardada con éxito.")
             }
@@ -81,6 +96,7 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
                 println("Error al guardar la lista de juegos: ${e.message}")
             }
     }
+
 
     fun fetchLikedGames(gameViewModel: GameViewModel) {
         viewModelScope.launch {
@@ -98,7 +114,8 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
 
                         // También actualiza el estado de cada juego en la lista de juegos...
                         likedGames.forEach { likedGame ->
-                           gameViewModel.getGameList().find { it.id == likedGame.id }?.isLiked = likedGame.isLiked
+                            gameViewModel.getGameList()
+                                .find { it.id == likedGame.id }?.isLiked = likedGame.isLiked
                         }
                         gameViewModel.notifyGameListChanged()
                     } else {
@@ -111,8 +128,10 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-     fun saveGameStateToDatabase(game: GameModel) {
-        val userLikedGamesRef = db.collection("JuegosGuardados").document(userId ?: "default_user")
+
+    fun saveGameStateToDatabase(game: GameModel) {
+        val userLikedGamesRef =
+            db.collection("JuegosGuardados").document(userId ?: "default_user")
 
         // Obtener la lista actual de juegos guardados
         userLikedGamesRef.get().addOnSuccessListener { document ->
@@ -122,7 +141,8 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
 
                 // Busca si el juego ya existe en la lista
                 val updatedGames = gamesData.toMutableList()
-                val existingGameIndex = updatedGames.indexOfFirst { (it["id"] as? String) == game.id }
+                val existingGameIndex =
+                    updatedGames.indexOfFirst { (it["id"] as? String) == game.id }
 
                 if (existingGameIndex != -1) {
                     // Actualiza el juego existente
@@ -163,5 +183,26 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
     }
 
 
+    fun fetchTopValoracionJuegos() {
+        viewModelScope.launch {
+            try {
+                val gameValoracionList =
+                    gameService.getGames(page = 1, pageSize = 10, search = "", ordering = "-rating")
+                _topValoracionJuego.value = gameValoracionList
+                Log.d("GameViewModel", "Games fetched: $gameValoracionList")
 
+            } catch (e: Exception) {
+                Log.e("GameViewModel", "Error fetching games: ${e.message}")
+            }
+
+
+        }
+
+
+    }
 }
+
+
+
+
+

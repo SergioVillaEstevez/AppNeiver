@@ -1,6 +1,7 @@
 package com.proyectofinal.redgame.data.network
 
 import android.util.Log
+import com.google.common.collect.Ordering
 import com.proyectofinal.redgame.core.RetrofitHelper
 import com.proyectofinal.redgame.data.model.GameModel
 import kotlinx.coroutines.Dispatchers
@@ -11,11 +12,11 @@ class GameService {
     private val retrofit = RetrofitHelper.getRetrofit()
 
 
-    suspend fun getGames(page:Int,pageSize:Int,search: String = ""): List<GameModel> {
+    suspend fun getGames(page:Int,pageSize:Int,search: String = "",ordering: String): List<GameModel> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = retrofit.create(GameApiClient::class.java)
-                    .getAllGames("ea5710fd888a4d6b82220d407aa759e8", page, pageSize,search)
+                    .getAllGames("ea5710fd888a4d6b82220d407aa759e8", page, pageSize,search, ordering)
 
                 Log.d("GameService", "Response: ${response.body()}")
                 if (response.isSuccessful) {

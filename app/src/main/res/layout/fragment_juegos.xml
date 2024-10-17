@@ -10,6 +10,8 @@
 
     <EditText
         android:id="@+id/etFilter"
+        android:hint="Buscar..."
+        android:textColorHint="@color/colorHint"
         android:singleLine="true"
         android:imeOptions="actionDone"
         android:maxLines="1"

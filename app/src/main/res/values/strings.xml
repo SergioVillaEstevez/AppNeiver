@@ -8,7 +8,7 @@
 
     <string name="perfil">Tu espacio</string>
     <string name="juegos">Juegos</string>
-    <string name="foro">Chat</string>
+    <string name="foro">Feed</string>
 
     <!--Login Home-->
     <string name="crear_cuenta">CREAR CUENTA</string>

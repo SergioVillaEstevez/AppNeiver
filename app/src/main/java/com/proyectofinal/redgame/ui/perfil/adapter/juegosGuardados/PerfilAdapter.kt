@@ -1,4 +1,4 @@
-package com.proyectofinal.redgame.ui.perfil.adapter
+package com.proyectofinal.redgame.ui.perfil.adapter.juegosGuardados
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
