@@ -20,22 +20,22 @@ class PerfilViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         Log.d("PerfilViewHolder", "Cargando imagen desde URL: ${gameLikedModel.backgroundImage}")
         Log.d("PerfilViewHolder", "Rendering game: ${gameLikedModel.name}")
 
-        binding.btnEliminar.setOnClickListener() {
+        binding.btnEliminar.setOnClickListener(){
 
 
             if (gameLikedModel.isLiked) {
                 // Añadir a la lista de "Me gusta"
-                gameLikedModel.isLiked = false
+
                 perfilViewModel.removeLikedGame(gameLikedModel)
 
 
             }
+        }
 
 
         }
 
 
+
     }
 
-
-}

@@ -27,6 +27,7 @@ class PerfilAdapter (private var likedList: MutableList<GameModel>,private var p
     fun updateList(newLikedGames: List<GameModel>) {
         likedList.clear()
         likedList.addAll(newLikedGames)
+
         notifyDataSetChanged() // Notificamos al adaptador que la lista ha cambiado
     }
 }

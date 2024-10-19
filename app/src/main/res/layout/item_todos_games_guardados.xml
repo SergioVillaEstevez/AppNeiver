@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewTodosJuegosGuardados"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#37213A"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivGame"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                tools:background="@color/gold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="10dp" />
+
+            <TextView
+                android:id="@+id/tvNombreJuego"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Título del juego"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivGame"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/accent"
+                android:textSize="18sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnEliminar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bottom_dislike"
+
+                android:text="eliminiar"
+                android:textColor="@color/secondary"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/ivGame"
+                app:layout_constraintTop_toTopOf="@id/ivGame" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/button_border"
+                android:text="Información"
+                android:textColor="@color/secondary"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/btnEliminar"
+                app:layout_constraintTop_toTopOf="@id/ivGame" />
+
+            <TextView
+                android:id="@+id/tvTituloValoracion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valoración:"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/gold"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvNombreJuego" />
+
+            <TextView
+                android:id="@+id/tvValoracion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="4.0"
+                tools:textColor="@color/black"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#4CAF50"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/tvTituloValoracion"
+                app:layout_constraintTop_toBottomOf="@id/tvNombreJuego" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

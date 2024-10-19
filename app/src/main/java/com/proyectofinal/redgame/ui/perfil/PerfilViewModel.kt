@@ -34,7 +34,8 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
     fun addLikedGame(game: GameModel) {
         viewModelScope.launch {
             val currentList = _likedGame.value.toMutableList()
-            if (!currentList.contains(game)) {
+            if (!currentList.any { it.id == game.id }) {
+                game.isLiked = true // Asegúrate de que isLiked sea verdadero
                 currentList.add(game)
                 _likedGame.value = currentList // Actualiza el estado
 
@@ -48,29 +49,13 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
     fun removeLikedGame(game: GameModel) {
         viewModelScope.launch {
             val currentList = _likedGame.value.toMutableList() // Estado local
-            if (currentList.contains(game)) {
+            if (currentList.removeIf { it.id == game.id }) {
+                game.isLiked = false
                 currentList.remove(game)
                 _likedGame.value = currentList // Actualiza el estado visual en la UI
 
                 // Guardar en Firestore
-                val userLikedGamesRef =
-                    db.collection("JuegosGuardados").document(userId ?: "default_user")
-
-                userLikedGamesRef.set(mapOf("games" to currentList.map {
-                    mapOf(
-                        "id" to it.id,
-                        "name" to it.name,
-                        "isLiked" to it.isLiked,
-                        "background_image" to it.backgroundImage,
-                        "rating" to it.rating
-                    )
-                }))
-                    .addOnSuccessListener {
-                        println("Lista actualizada guardada con éxito.")
-                    }
-                    .addOnFailureListener { e ->
-                        println("Error al guardar la lista actualizada: ${e.message}")
-                    }
+                saveLikedGamesToFirestore(currentList)
             }
         }
     }
@@ -107,17 +92,22 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
                 .get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
-                        val gamesData = document.data?.get("games") as List<Map<String, Any>>
-                        val likedGames = gamesData.map { GameModel.fromMap(it) }
-                        _likedGame.value = likedGames // Actualiza el estado
+                        // Verifica que el campo "games" no sea null y sea una lista de mapas
+                        val gamesData = document.data?.get("games") as? List<Map<String, Any>>
 
+                        if (gamesData != null) {
+                            val likedGames = gamesData.map { GameModel.fromMap(it) }
+                            _likedGame.value = likedGames // Actualiza el estado
 
-                        // También actualiza el estado de cada juego en la lista de juegos...
-                        likedGames.forEach { likedGame ->
-                            gameViewModel.getGameList()
-                                .find { it.id == likedGame.id }?.isLiked = likedGame.isLiked
+                            // También actualiza el estado de cada juego en la lista de juegos...
+                            likedGames.forEach { likedGame ->
+                                gameViewModel.getGameList()
+                                    .find { it.id == likedGame.id }?.isLiked = likedGame.isLiked
+                            }
+                            gameViewModel.notifyGameListChanged()
+                        } else {
+                            Log.d("PerfilViewModel", "No games found or 'games' field is null.")
                         }
-                        gameViewModel.notifyGameListChanged()
                     } else {
                         Log.d("PerfilViewModel", "No liked games found for user.")
                     }

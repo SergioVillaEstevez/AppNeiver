@@ -55,7 +55,7 @@ class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 
 
-            if (gameModel.isLiked) {
+         if (gameModel.isLiked) {
                 perfilViewModel.addLikedGame(gameModel)  // Añadir a la lista de "Me gusta"
             } else{
                 perfilViewModel.removeLikedGame(gameModel)

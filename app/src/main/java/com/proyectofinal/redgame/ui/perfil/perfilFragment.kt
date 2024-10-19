@@ -46,10 +46,11 @@ class perfilFragment : Fragment() {
 
 
 
-
+        // cargar fragment ver todos los juegos guardados
         binding.btnVerTodo.setOnClickListener(){
             println("hola mundo")
             findNavController().navigate(R.id.action_perfilFragment_to_juegosGuardadosFragment)
+
         }
 
         return binding.root
@@ -68,6 +69,7 @@ class perfilFragment : Fragment() {
         observeTopValoracionJuego()
         perfilViewModel.fetchLikedGames(gameViewModel)
         perfilViewModel.fetchTopValoracionJuegos()
+
 
 
 
@@ -109,12 +111,17 @@ class perfilFragment : Fragment() {
     }
 
     private fun observeLikedGame() {
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 perfilViewModel.likedGame.collect() { likedGames ->
                     Log.d("PerfilFragment", "Liked games count: ${likedGames.size}")
-                    perfilAdapter.updateList(likedGames)
+
+
+
+                            perfilAdapter.updateList(likedGames)
+
+
+
                     updateButtonStatesInGameViewModel(likedGames)
                 }
             }
@@ -129,7 +136,10 @@ class perfilFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Limpia el binding para evitar fugas de memoria
+
+
+        _binding = null
+
     }
 
 
