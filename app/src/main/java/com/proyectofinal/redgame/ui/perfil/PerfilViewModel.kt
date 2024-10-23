@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.proyectofinal.redgame.data.model.GameModel
-import com.proyectofinal.redgame.data.model.GameProvider
-import com.proyectofinal.redgame.data.model.LikedGame
 import com.proyectofinal.redgame.data.network.GameService
 import com.proyectofinal.redgame.ui.juegos.GameViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -85,8 +83,8 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
 
     fun fetchLikedGames(gameViewModel: GameViewModel) {
         viewModelScope.launch {
-            val userId = FirebaseAuth.getInstance().currentUser?.uid
-            val db = FirebaseFirestore.getInstance()
+
+            
 
             db.collection("JuegosGuardados").document(userId ?: "default_user")
                 .get()

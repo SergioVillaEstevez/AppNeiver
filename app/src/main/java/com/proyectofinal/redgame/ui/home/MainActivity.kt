@@ -1,12 +1,18 @@
 package com.proyectofinal.redgame.ui.home
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
+
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.databinding.ActivityMainBinding
+import com.proyectofinal.redgame.login.ui.home.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,6 +24,41 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        binding.menuAjustes.setOnClickListener(){ view->
+            val popupMenu = PopupMenu(this, view)
+            popupMenu.menuInflater.inflate(R.menu.menu_ajustes,popupMenu.menu)
+
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.misDatos-> {
+                        // Acción para la opción 1
+                        true
+                    }
+                    R.id.cerrarSesion -> {
+
+                        FirebaseAuth.getInstance().signOut() // Cerrar sesión
+                        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
+
+                        // Opcional: Redirigir a la actividad de inicio de sesión
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                        finish() // Opcional: Termina la actividad actual
+
+
+
+                        // Acción para la opción 2
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+            popupMenu.show()
+
+
+        }
+
 
         setContentView(binding.root)
 

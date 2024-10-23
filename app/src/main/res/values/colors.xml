@@ -17,6 +17,9 @@
     <color name="red">#FF0000</color>
     <color name="green">#4CAF50</color>
     <color name="trans">#00FFFFFF</color>
+    <color name="cardPostAll">#00545F</color>
+    <color name="cardPostUser">#28005F</color>
+
 
 
 

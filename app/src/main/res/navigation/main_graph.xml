@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/foroFragment"
-        android:name="com.proyectofinal.redgame.ui.foro.foroFragment"
+        android:name="com.proyectofinal.redgame.ui.foro.ForoFragment"
         android:label="fragment_foro"
         tools:layout="@layout/fragment_foro" />
     <fragment

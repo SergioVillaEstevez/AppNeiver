@@ -153,9 +153,10 @@ class GameFragment : Fragment() {
     // FUNCION PARA CARGAR JUEGOS EN EL FRAGMENT
     private fun loadGames() {
         if (isLoading) return
+
         isLoading = true
 
-        lifecycleScope.launch {
+        lifecycleScope.launch() {
             try {
                 val games = gameService.getGames(currentPage, pageSize, ordering = "")
                 juegosAdapter.addGames(games)  // Añadir los juegos al adapter

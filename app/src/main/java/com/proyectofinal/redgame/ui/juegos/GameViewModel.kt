@@ -1,12 +1,11 @@
 package com.proyectofinal.redgame.ui.juegos
 
 import android.util.Log
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.data.network.GameService
-import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -26,16 +25,21 @@ class GameViewModel @Inject constructor() : ViewModel() {
         fetchGames("")
     }
 
-  fun fetchGames( search: String) {
-        viewModelScope.launch {
+    fun fetchGames(search: String) {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val gameList = gameService.getGames(page = 1, pageSize = 10,search= search, ordering = "" )
+                
+
+                val gameList =
+                    gameService.getGames(page = 1, pageSize = 10, search = search, ordering = "")
                 _game.value = gameList
-                originalGameList=gameList
+
+                originalGameList = gameList
                 Log.d("GameViewModel", "Games fetched: $gameList")
 
             } catch (e: Exception) {
                 Log.e("GameViewModel", "Error fetching games: ${e.message}")
+
             }
         }
 
