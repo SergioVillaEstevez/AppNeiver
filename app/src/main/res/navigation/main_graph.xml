@@ -28,5 +28,9 @@
         android:id="@+id/juegosGuardadosFragment"
         android:name="com.proyectofinal.redgame.ui.juegosGuardados.JuegosGuardadosFragment"
         android:label="fragment_juegos_guardados"
-        tools:layout="@layout/fragment_juegos_guardados" />
+        tools:layout="@layout/fragment_juegos_guardados" >
+        <action
+            android:id="@+id/action_juegosGuardadosFragment_to_perfilFragment3"
+            app:destination="@id/perfilFragment" />
+    </fragment>
 </navigation>

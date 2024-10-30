@@ -1,17 +1,22 @@
 package com.proyectofinal.redgame.ui.foro
 
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.AndroidViewModel
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.proyectofinal.redgame.data.model.PostModel
+import com.proyectofinal.redgame.ui.foro.workers.ClearChatWorker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
-class ForoViewModel : ViewModel() {
+class ForoViewModel(application: Application) : AndroidViewModel(application) {
 
     private var _post = MutableStateFlow<List<PostModel>>(emptyList())
     val post: StateFlow<List<PostModel>> = _post
@@ -45,12 +50,14 @@ class ForoViewModel : ViewModel() {
                     // Guardar la publicación en una colección general "Posts"
                     val postsRef = db.collection("Posts")
 
-                    postsRef.add(mapOf(
-                        "username" to username,
-                        "content" to post.content,
-                        "timestamp" to post.timestamp,
-                        "userEmail" to userEmail // Guardar el correo del autor
-                    ))
+                    postsRef.add(
+                        mapOf(
+                            "username" to username,
+                            "content" to post.content,
+                            "timestamp" to post.timestamp,
+                            "userEmail" to userEmail // Guardar el correo del autor
+                        )
+                    )
                         .addOnSuccessListener {
                             Log.d("ForoViewModel", "Publicación guardada con éxito.")
                             fetchPostAll() // Actualizar el RecyclerView después de guardar
@@ -75,7 +82,10 @@ class ForoViewModel : ViewModel() {
 
         // Usar un listener para obtener actualizaciones en tiempo real
         db.collection("Posts")
-            .orderBy("timestamp", Query.Direction.DESCENDING) // Ordenar las publicaciones por tiempo descendente
+            .orderBy(
+                "timestamp",
+                Query.Direction.DESCENDING
+            ) // Ordenar las publicaciones por tiempo descendente
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Log.e("ForoViewModel", "Error al obtener las publicaciones: ${e.message}")
@@ -87,5 +97,32 @@ class ForoViewModel : ViewModel() {
                     _post.value = postList // Actualiza la lista de publicaciones
                 }
             }
+    }
+
+
+    fun ClearChat() {
+
+        val workManager = WorkManager.getInstance(getApplication())
+
+        val clearChatWorkRequest: PeriodicWorkRequest = PeriodicWorkRequestBuilder<ClearChatWorker>(
+            15,
+            TimeUnit.MINUTES
+        ).build()
+
+
+
+        workManager.getWorkInfosForUniqueWorkLiveData("clearChatWork")
+            .observeForever { workInfos ->
+                if (workInfos.isNullOrEmpty()) {
+                    // Si no hay trabajos encolados, encola uno nuevo
+                    workManager.enqueueUniquePeriodicWork(
+                        "clearChatWork", // Nombre único del trabajo
+                        ExistingPeriodicWorkPolicy.REPLACE, // Reemplaza cualquier trabajo existente
+                        clearChatWorkRequest
+                    )
+                }
+            }
+
+
     }
 }

@@ -48,8 +48,9 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             val currentList = _likedGame.value.toMutableList() // Estado local
             if (currentList.removeIf { it.id == game.id }) {
+
                 game.isLiked = false
-                currentList.remove(game)
+
                 _likedGame.value = currentList // Actualiza el estado visual en la UI
 
                 // Guardar en Firestore

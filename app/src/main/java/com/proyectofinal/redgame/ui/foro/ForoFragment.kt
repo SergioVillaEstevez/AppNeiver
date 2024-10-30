@@ -56,6 +56,8 @@ class ForoFragment : Fragment() {
 
         }
 
+
+
         return binding.root
     }
 
@@ -66,6 +68,7 @@ class ForoFragment : Fragment() {
 
         foroViewModel.fetchPostAll()
         initRecyclerView()
+        foroViewModel.ClearChat()
 
     }
 

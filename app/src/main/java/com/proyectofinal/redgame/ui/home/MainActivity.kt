@@ -3,6 +3,7 @@ package com.proyectofinal.redgame.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
@@ -13,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.databinding.ActivityMainBinding
 import com.proyectofinal.redgame.login.ui.home.LoginActivity
+import com.proyectofinal.redgame.ui.foro.ForoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +64,9 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+
+
+
         setContentView(binding.root)
 
         initUi()
@@ -68,12 +75,31 @@ class MainActivity : AppCompatActivity() {
     private fun initUi() {
         initNavigation()
     }
-
     private fun initNavigation() {
         val navHost =
             supportFragmentManager.findFragmentById(R.id.framentContainerView) as NavHostFragment
         navController = navHost.navController
         binding.bottomNavView.setupWithNavController(navController)
+
+        //listener para configurar los clics de la navegacion inferior
+        binding.bottomNavView.setOnItemSelectedListener{item->
+            when (item.itemId){
+                R.id.perfilFragment-> {
+                    navController.navigate(R.id.perfilFragment)
+                    true
+                }
+                R.id.juegosFragment -> {
+                    navController.navigate(R.id.juegosFragment)
+                    true
+                }
+                R.id.foroFragment -> {
+                    navController.navigate(R.id.foroFragment)
+                    true
+                }
+
+                else -> false
+            }
+        }
 
     }
 
