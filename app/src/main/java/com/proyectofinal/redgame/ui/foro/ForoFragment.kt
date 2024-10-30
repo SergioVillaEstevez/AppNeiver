@@ -15,9 +15,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.proyectofinal.redgame.data.model.PostModel
 import com.proyectofinal.redgame.databinding.FragmentForoBinding
 import com.proyectofinal.redgame.ui.foro.adapter.ForoAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class ForoFragment : Fragment() {
 
     private var _binding: FragmentForoBinding? = null
@@ -68,7 +69,8 @@ class ForoFragment : Fragment() {
 
         foroViewModel.fetchPostAll()
         initRecyclerView()
-        foroViewModel.ClearChat()
+        foroViewModel.ClearChat(requireContext())
+
 
     }
 

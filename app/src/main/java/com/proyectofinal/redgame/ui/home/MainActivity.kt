@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
+    private val foroViewModel: ForoViewModel by viewModels()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,15 +66,13 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-
-
         setContentView(binding.root)
 
         initUi()
     }
 
     private fun initUi() {
+
         initNavigation()
     }
     private fun initNavigation() {

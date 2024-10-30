@@ -1,8 +1,10 @@
 package com.proyectofinal.redgame.ui.foro
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
@@ -12,11 +14,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.proyectofinal.redgame.data.model.PostModel
 import com.proyectofinal.redgame.ui.foro.workers.ClearChatWorker
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+@HiltViewModel
+class ForoViewModel @Inject constructor(private val application: Application) : ViewModel() {
 
-class ForoViewModel(application: Application) : AndroidViewModel(application) {
+    private val workManager = WorkManager.getInstance()
 
     private var _post = MutableStateFlow<List<PostModel>>(emptyList())
     val post: StateFlow<List<PostModel>> = _post
@@ -99,30 +105,22 @@ class ForoViewModel(application: Application) : AndroidViewModel(application) {
             }
     }
 
+    fun ClearChat(context: Context){
 
-    fun ClearChat() {
-
-        val workManager = WorkManager.getInstance(getApplication())
-
-        val clearChatWorkRequest: PeriodicWorkRequest = PeriodicWorkRequestBuilder<ClearChatWorker>(
-            15,
-            TimeUnit.MINUTES
+        val workManager= WorkManager.getInstance(application)
+        val clearChatWorkRequest = PeriodicWorkRequestBuilder<ClearChatWorker>(
+            12,TimeUnit.HOURS
         ).build()
 
-
-
-        workManager.getWorkInfosForUniqueWorkLiveData("clearChatWork")
-            .observeForever { workInfos ->
-                if (workInfos.isNullOrEmpty()) {
-                    // Si no hay trabajos encolados, encola uno nuevo
-                    workManager.enqueueUniquePeriodicWork(
-                        "clearChatWork", // Nombre único del trabajo
-                        ExistingPeriodicWorkPolicy.REPLACE, // Reemplaza cualquier trabajo existente
-                        clearChatWorkRequest
-                    )
-                }
-            }
+        workManager.enqueueUniquePeriodicWork(
+            "clearChatWork",
+            ExistingPeriodicWorkPolicy.KEEP,
+            clearChatWorkRequest
+        )
 
 
     }
 }
+
+
+
