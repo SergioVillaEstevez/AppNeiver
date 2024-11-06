@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    tools:context=".ui.misDatos.MisDatosActivity">
+
+    <EditText
+        android:id="@+id/etNombreUsuarioUpdate"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="116dp"
+        android:background="@drawable/button_border"
+        android:hint="Nombre de usuario"
+        android:maxLines="1"
+        android:padding="15sp"
+        android:singleLine="true"
+        android:textColor="@color/accent"
+        android:textColorHint="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/etNombreCompletoUpdate"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:background="@drawable/button_border"
+        android:hint="Nombre Completo"
+        android:padding="15sp"
+        android:textColor="@color/accent"
+        android:textColorHint="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etNombreUsuarioUpdate"
+        >
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/etCorreoElectronicoUpdate"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:background="@drawable/button_border"
+        android:hint="Correo electronico"
+        android:padding="15sp"
+        android:textColor="@color/accent"
+        android:textColorHint="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etNombreCompletoUpdate"
+        >
+
+
+    </EditText>
+
+
+    <EditText
+        android:id="@+id/etPasswordUpdate"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:background="@drawable/button_border"
+        android:hint="Password"
+        android:padding="15sp"
+        android:textColor="@color/accent"
+        android:textColorHint="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etCorreoElectronicoUpdate"
+        >
+
+    </EditText>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnActualizarDatos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/etPasswordUpdate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Guardar"
+        android:background="@drawable/button_border_radius">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnatrasEditDatos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_border"
+        android:text="volver"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnActualizarDatos"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

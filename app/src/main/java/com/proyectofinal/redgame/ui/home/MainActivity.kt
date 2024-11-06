@@ -15,6 +15,7 @@ import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.databinding.ActivityMainBinding
 import com.proyectofinal.redgame.login.ui.home.LoginActivity
 import com.proyectofinal.redgame.ui.foro.ForoViewModel
+import com.proyectofinal.redgame.ui.misDatos.MisDatosActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,6 +40,9 @@ class MainActivity : AppCompatActivity() {
                 when (item.itemId) {
                     R.id.misDatos-> {
                         // Acción para la opción 1
+                        val intent = Intent(this, MisDatosActivity::class.java)
+                        startActivity(intent)
+
                         true
                     }
                     R.id.cerrarSesion -> {

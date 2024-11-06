@@ -5,13 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.data.network.GameService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-class GameViewModel @Inject constructor() : ViewModel() {
+@HiltViewModel
+class GameViewModel @Inject constructor(
+    private val gameService: GameService
+) : ViewModel() {
     private var originalGameList: List<GameModel> = emptyList()
 
     private var _game = MutableStateFlow<List<GameModel>>(emptyList())
@@ -19,7 +22,7 @@ class GameViewModel @Inject constructor() : ViewModel() {
 
     private lateinit var searchQuery: String
 
-    private val gameService = GameService()
+    //private val gameService = GameService()
 
     init {
         fetchGames("")

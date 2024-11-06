@@ -7,8 +7,9 @@ import com.proyectofinal.redgame.data.model.GameModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import javax.inject.Inject
 
-class GameService {
+class GameService @Inject constructor() {
     private val retrofit = RetrofitHelper.getRetrofit()
 
 

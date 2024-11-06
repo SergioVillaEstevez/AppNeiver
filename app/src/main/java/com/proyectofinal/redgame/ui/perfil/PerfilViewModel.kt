@@ -8,13 +8,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.data.network.GameService
 import com.proyectofinal.redgame.ui.juegos.GameViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-class PerfilViewModel @Inject constructor() : ViewModel() {
+@HiltViewModel
+class PerfilViewModel @Inject constructor(
+    private var gameService : GameService
+) : ViewModel() {
 
 
     private var _likedGame = MutableStateFlow<List<GameModel>>(emptyList())
@@ -23,7 +26,7 @@ class PerfilViewModel @Inject constructor() : ViewModel() {
     private var _topValoracionJuego = MutableStateFlow<List<GameModel>>(emptyList())
     val topValoracionJuego: StateFlow<List<GameModel>> = _topValoracionJuego
 
-    private var gameService = GameService()
+    //private var gameService = GameService()
 
     private val db = FirebaseFirestore.getInstance()
     private val userId = FirebaseAuth.getInstance().currentUser?.uid // Obtener el ID del usuario

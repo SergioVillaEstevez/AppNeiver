@@ -93,14 +93,16 @@ class RegistrarActivity : AppCompatActivity() {
         val nombre_completo= binding.etNombreCompleto.text.toString()
         val nombre_usuario= binding.etNuevoUsuario.text.toString()
 
-        if (nombre_completo.isEmpty() || nombre_usuario.isEmpty()) {
+        if (nombre_completo.isEmpty() || nombre_usuario.isEmpty() || email.isEmpty()||password.isEmpty()) {
             Log.d("RegisterActivity", "Faltan datos para guardar en la base de datos")
             return
         }
 
         val userData= hashMapOf(
-            "NombreCompleto" to nombre_completo,
-            "nombre_usuario" to nombre_usuario
+            "nombre_completo" to nombre_completo,
+            "nombre_usuario" to nombre_usuario,
+            "correo_electronico" to email,
+            "password" to password
 
         )
 
