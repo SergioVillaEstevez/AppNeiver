@@ -94,12 +94,14 @@
         android:id="@+id/btnActualizarDatos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/etPasswordUpdate"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/button_border_radius"
         android:text="Guardar"
-        android:background="@drawable/button_border_radius">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPasswordUpdate"
+        app:layout_constraintVertical_bias="0.135">
 
     </androidx.appcompat.widget.AppCompatButton>
 
@@ -116,7 +118,7 @@
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnActualizarDatos"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.169"
         tools:ignore="MissingConstraints">
 
     </androidx.appcompat.widget.AppCompatButton>

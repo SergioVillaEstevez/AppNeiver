@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.proyectofinal.redgame.data.model.GameModel
+import com.proyectofinal.redgame.data.model.LikedGame
 import com.proyectofinal.redgame.data.network.GameService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,13 +26,29 @@ class GameViewModel @Inject constructor(
     //private val gameService = GameService()
 
     init {
-        fetchGames("")
+
+            fetchGames("")
+
     }
+
+    // Función para actualizar solo el estado 'isLiked' de un juego
+    fun updateGameLikedState(gameId: String, isLiked: Boolean) {
+        val updatedList = _game.value.map {
+            if (it.id == gameId) {
+                it.copy(isLiked = isLiked) // Actualiza solo el 'isLiked'
+            } else {
+                it
+            }
+        }
+        _game.value = updatedList // Actualiza el estado con la nueva lista
+    }
+
+
 
     fun fetchGames(search: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                
+
 
                 val gameList =
                     gameService.getGames(page = 1, pageSize = 10, search = search, ordering = "")

@@ -23,8 +23,7 @@ class JuegosGuardadosViewModel @Inject constructor() : ViewModel() {
 
      fun fetchLikedGame(gameViewModel: GameViewModel) {
         viewModelScope.launch {
-            val db = FirebaseFirestore.getInstance()
-            val userId = FirebaseAuth.getInstance().currentUser?.uid
+
 
             db.collection("JuegosGuardados").document(userId ?: "default_user")
                 .get()
@@ -70,7 +69,7 @@ class JuegosGuardadosViewModel @Inject constructor() : ViewModel() {
 
         val userLinkedGameRef =
             db.collection("JuegosGuardados").document(userId?:"defaul_user")
-        userLinkedGameRef.set(mapOf("game" to currentGame.map {game ->
+        userLinkedGameRef.update(mapOf("game" to currentGame.map {game ->
             mapOf(
                 "id" to game.id,
                 "name" to game.name,

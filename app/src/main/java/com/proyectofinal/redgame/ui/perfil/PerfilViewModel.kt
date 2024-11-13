@@ -1,6 +1,7 @@
 package com.proyectofinal.redgame.ui.perfil
 
 import android.util.Log
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
@@ -16,8 +17,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PerfilViewModel @Inject constructor(
+
     private var gameService : GameService
 ) : ViewModel() {
+
+
 
 
     private var _likedGame = MutableStateFlow<List<GameModel>>(emptyList())
@@ -25,6 +29,8 @@ class PerfilViewModel @Inject constructor(
 
     private var _topValoracionJuego = MutableStateFlow<List<GameModel>>(emptyList())
     val topValoracionJuego: StateFlow<List<GameModel>> = _topValoracionJuego
+
+
 
     //private var gameService = GameService()
 
@@ -34,40 +40,53 @@ class PerfilViewModel @Inject constructor(
     // Función para añadir un juego a la lista de "me gusta" y actualizar Firestore
     fun addLikedGame(game: GameModel) {
         viewModelScope.launch {
+
+
             val currentList = _likedGame.value.toMutableList()
             if (!currentList.any { it.id == game.id }) {
                 game.isLiked = true // Asegúrate de que isLiked sea verdadero
                 currentList.add(game)
-                _likedGame.value = currentList // Actualiza el estado
+                _likedGame.value = currentList // Actualiza el estado local
 
                 // Guardar en Firestore
                 saveLikedGamesToFirestore(currentList)
+
+
+
             }
         }
     }
+
 
     // Función para eliminar un juego de la lista de "me gusta" y actualizar Firestore
     fun removeLikedGame(game: GameModel) {
         viewModelScope.launch {
-            val currentList = _likedGame.value.toMutableList() // Estado local
+            val currentList = _likedGame.value.toMutableList()
+
+            // Eliminar el juego de la lista local
             if (currentList.removeIf { it.id == game.id }) {
+                game.isLiked = false  // Establecer isLiked a false
 
-                game.isLiked = false
+                // Actualizar el estado visual (UI)
+                _likedGame.value = currentList
 
-                _likedGame.value = currentList // Actualiza el estado visual en la UI
-
-                // Guardar en Firestore
+                // Guardar la lista actualizada en Firestore
                 saveLikedGamesToFirestore(currentList)
+
+                // Si es necesario, también puedes actualizar Firestore directamente para reflejar el cambio
+                // Esto es útil si tienes una colección de "games" donde se almacena el estado de cada juego
+
             }
         }
     }
+
 
 
     // Función para guardar la lista de juegos "gustados" en Firestore
     private fun saveLikedGamesToFirestore(games: List<GameModel>) {
         val userLikedGamesRef = db.collection("JuegosGuardados").document(userId ?: "default_user")
 
-        userLikedGamesRef.set(mapOf("games" to games.map {
+        userLikedGamesRef.update(mapOf("games" to games.map {
             mapOf(
                 "id" to it.id,
                 "name" to it.name,
@@ -87,29 +106,27 @@ class PerfilViewModel @Inject constructor(
 
     fun fetchLikedGames(gameViewModel: GameViewModel) {
         viewModelScope.launch {
-
-            
-
             db.collection("JuegosGuardados").document(userId ?: "default_user")
                 .get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
-                        // Verifica que el campo "games" no sea null y sea una lista de mapas
-                        val gamesData = document.data?.get("games") as? List<Map<String, Any>>
+                        // Obtiene los juegos guardados en Firestore
+                        val gamesData = document.data?.get("games") as? List<Map<String, Any>> ?: emptyList()
+                        val likedGames = gamesData.map { GameModel.fromMap(it) }
 
-                        if (gamesData != null) {
-                            val likedGames = gamesData.map { GameModel.fromMap(it) }
-                            _likedGame.value = likedGames // Actualiza el estado
+                        // Actualiza el estado de los juegos guardados
+                        _likedGame.value = likedGames
 
-                            // También actualiza el estado de cada juego en la lista de juegos...
-                            likedGames.forEach { likedGame ->
-                                gameViewModel.getGameList()
-                                    .find { it.id == likedGame.id }?.isLiked = likedGame.isLiked
+                        // Sincroniza el estado de la lista de juegos con la de Firestore
+                        gameViewModel.getGameList().forEach { game ->
+                            // Si el juego está en Firestore, se marca como 'liked'
+                            likedGames.find { it.id == game.id }?.let { likedGame ->
+                                game.isLiked = likedGame.isLiked
                             }
-                            gameViewModel.notifyGameListChanged()
-                        } else {
-                            Log.d("PerfilViewModel", "No games found or 'games' field is null.")
                         }
+
+                        // Notifica a ViewModel que la lista ha cambiado
+                        gameViewModel.notifyGameListChanged()
                     } else {
                         Log.d("PerfilViewModel", "No liked games found for user.")
                     }
@@ -159,7 +176,7 @@ class PerfilViewModel @Inject constructor(
                 }
 
                 // Guarda la lista actualizada de juegos en Firestore
-                userLikedGamesRef.set(mapOf("games" to updatedGames))
+                userLikedGamesRef.update(mapOf("games" to updatedGames))
                     .addOnSuccessListener {
                         println("Estado del juego guardado con éxito.")
                     }

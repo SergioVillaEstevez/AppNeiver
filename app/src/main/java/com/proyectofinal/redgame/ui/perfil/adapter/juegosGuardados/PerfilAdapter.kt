@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.data.model.GameModel
+import com.proyectofinal.redgame.ui.juegos.GameViewModel
 import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
 
 class PerfilAdapter (private var likedList: MutableList<GameModel>,private var perfilViewModel: PerfilViewModel): RecyclerView.Adapter<PerfilViewHolder>(){

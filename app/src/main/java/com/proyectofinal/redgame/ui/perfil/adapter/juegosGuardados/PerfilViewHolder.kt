@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.databinding.ItemLikedGameBinding
+import com.proyectofinal.redgame.ui.juegos.GameViewModel
 import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
 
 
@@ -25,9 +26,12 @@ class PerfilViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
             if (gameLikedModel.isLiked) {
                 // Añadir a la lista de "Me gusta"
-                gameLikedModel.isLiked=false
+
+
+
                 perfilViewModel.removeLikedGame(gameLikedModel)
 
+                Log.d("PerfilViewHolder", "El juego ${gameLikedModel.name.toString()} se ha eliminado y ahora es ${gameLikedModel.isLiked}")
 
             }
         }

@@ -80,31 +80,38 @@ class MainActivity : AppCompatActivity() {
         initNavigation()
     }
     private fun initNavigation() {
-        val navHost =
-            supportFragmentManager.findFragmentById(R.id.framentContainerView) as NavHostFragment
+        val navHost = supportFragmentManager.findFragmentById(R.id.framentContainerView) as NavHostFragment
         navController = navHost.navController
         binding.bottomNavView.setupWithNavController(navController)
 
-        //listener para configurar los clics de la navegacion inferior
-        binding.bottomNavView.setOnItemSelectedListener{item->
-            when (item.itemId){
-                R.id.perfilFragment-> {
-                    navController.navigate(R.id.perfilFragment)
-                    true
-                }
-                R.id.juegosFragment -> {
-                    navController.navigate(R.id.juegosFragment)
+        // Listener para configurar los clics de la navegación inferior
+        binding.bottomNavView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.perfilFragment -> {
+                    // Navegar solo si no estamos ya en el fragmento de perfil
+                    if (navController.currentDestination?.id != R.id.perfilFragment) {
+                        navController.navigate(R.id.perfilFragment)
+                    }
                     true
                 }
                 R.id.foroFragment -> {
-                    navController.navigate(R.id.foroFragment)
+                    // Navegar solo si no estamos ya en el fragmento de foro
+                    if (navController.currentDestination?.id != R.id.foroFragment) {
+                        navController.navigate(R.id.foroFragment)
+                    }
                     true
                 }
+                R.id.juegosFragment -> {
+                    // Verificamos si ya estamos en juegosFragment para evitar reinstanciación
+                    if (navController.currentDestination?.id != R.id.juegosFragment) {
+                        navController.popBackStack(R.id.juegosFragment, false)
 
+                    }
+                    true
+                }
                 else -> false
             }
         }
-
     }
 
 

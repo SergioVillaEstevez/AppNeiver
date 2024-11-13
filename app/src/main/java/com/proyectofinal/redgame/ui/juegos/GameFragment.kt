@@ -63,25 +63,31 @@ class GameFragment : Fragment() {
     ): View {
         _binding = FragmentJuegosBinding.inflate(layoutInflater, container, false)
 
+
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         initUi()
 
         fun normalizeString(str: String): String {
             return str.lowercase().replace(Regex("[^a-zA-Z0-9 ]"), "").trim()
         }
 
+
+
         binding.etFilter.addTextChangedListener { userFilter ->
             val filterText = normalizeString(userFilter?.toString().orEmpty())
             Log.i("Filter", "Texto ingresado: $filterText")
 
-            juegosViewModel.fetchGames(search = filterText )
+            juegosViewModel.fetchGames(search = filterText)
 
         }
+
 
 
     }
@@ -99,9 +105,9 @@ class GameFragment : Fragment() {
 
     private fun initUi() {
         initUiState()
-
-
         initRecyclerView()
+
+
     }
 
     private fun initUiState() {
@@ -149,6 +155,8 @@ class GameFragment : Fragment() {
 
 
     }
+
+
 
     // FUNCION PARA CARGAR JUEGOS EN EL FRAGMENT
     private fun loadGames() {
@@ -203,7 +211,10 @@ class GameFragment : Fragment() {
         return likedGamesIds
     }
 
-}
+
+    }
+
+
 
 
 

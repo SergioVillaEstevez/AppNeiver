@@ -73,6 +73,9 @@ class perfilFragment : Fragment() {
 
 
 
+
+
+
     }
 
     private fun initRecyclerView() {
@@ -122,7 +125,7 @@ class perfilFragment : Fragment() {
 
 
 
-                    updateButtonStatesInGameViewModel(likedGames)
+                    //updateButtonStatesInGameViewModel(likedGames)
                 }
             }
         }
