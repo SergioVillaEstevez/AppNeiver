@@ -26,7 +26,7 @@
       android:id="@+id/btnVerTodo"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="124dp"
+      android:layout_marginStart="24dp"
       android:layout_marginTop="16dp"
       android:background="@null"
       android:text="ver todos"
@@ -65,7 +65,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
 
-      android:layout_marginStart="56dp"
+      android:layout_marginStart="8dp"
       android:layout_marginBottom="8dp"
       android:background="@null"
       android:text="ver todos"
