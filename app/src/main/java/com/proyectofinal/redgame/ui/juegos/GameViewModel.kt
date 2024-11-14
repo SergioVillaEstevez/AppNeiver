@@ -16,6 +16,8 @@ import javax.inject.Inject
 class GameViewModel @Inject constructor(
     private val gameService: GameService
 ) : ViewModel() {
+
+    private lateinit var compartirViewModel: CompartirViewModel
     private var originalGameList: List<GameModel> = emptyList()
 
     private var _game = MutableStateFlow<List<GameModel>>(emptyList())

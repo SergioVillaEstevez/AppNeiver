@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.databinding.FragmentPerfilBinding
+import com.proyectofinal.redgame.ui.juegos.CompartirViewModel
 import com.proyectofinal.redgame.ui.juegos.GameViewModel
 import com.proyectofinal.redgame.ui.perfil.adapter.juegosGuardados.PerfilAdapter
 import com.proyectofinal.redgame.ui.perfil.adapter.recomendaciones.RecomendacionAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -36,6 +38,8 @@ class perfilFragment : Fragment() {
     private val perfilViewModel: PerfilViewModel by viewModels()
 
     private val gameViewModel: GameViewModel by viewModels()
+
+    private val compartirViewModel: CompartirViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -79,7 +83,7 @@ class perfilFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        perfilAdapter = PerfilAdapter(mutableListOf(), perfilViewModel)
+        perfilAdapter = PerfilAdapter(mutableListOf(), perfilViewModel,compartirViewModel)
 
         recomendacionAdapter= RecomendacionAdapter(mutableListOf(),perfilViewModel)
 
@@ -116,16 +120,14 @@ class perfilFragment : Fragment() {
     private fun observeLikedGame() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                perfilViewModel.likedGame.collect() { likedGames ->
+                // Cambiar compartirViewModel por perfilViewModel si likedGame está en perfilViewModel
+                perfilViewModel.likedGame.collect { likedGames ->
                     Log.d("PerfilFragment", "Liked games count: ${likedGames.size}")
 
+                    updateButtonStatesInGameViewModel(likedGames)
 
+                    perfilAdapter.updateList(likedGames)
 
-                            perfilAdapter.updateList(likedGames)
-
-
-
-                    //updateButtonStatesInGameViewModel(likedGames)
                 }
             }
         }

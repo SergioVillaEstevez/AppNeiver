@@ -35,6 +35,7 @@ class GameFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val juegosViewModel: GameViewModel by viewModels<GameViewModel>()
+    private  val compartirViewModel: CompartirViewModel by viewModels()
 
     private lateinit var juegosAdapter: GameAdapter
     private lateinit var gameService: GameService
@@ -113,22 +114,16 @@ class GameFragment : Fragment() {
     private fun initUiState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                juegosViewModel.game.collect() { games ->
-                    println("Número de juegos recibidos: ${games.size}")
-                    val likedGamesStates = fetchLikedGamesFromFirestore()
-                    allGames=games.toMutableList()
-
-                    games.forEach { game ->
-                        game.isLiked = likedGamesStates.contains(game.id) // Asignar el estado
+                compartirViewModel.likedGame.collect { likedGames ->  // Ahora recolectamos una lista de GameModel completos
+                    juegosViewModel.game.collect { games ->
+                        val updatedGames = games.map { game ->
+                            val isLiked = likedGames.any { it.id == game.id }  // Comparamos si el ID del juego está en la lista de juegos "gustados"
+                            game.copy(isLiked = isLiked)  // Creamos una copia del juego con el estado actualizado
+                        }
+                        juegosAdapter.updateList(updatedGames)  // Actualizamos el RecyclerView con los juegos modificados
                     }
-
-                    juegosAdapter.updateList(games)
-
                 }
             }
-
-
-
         }
 
 
@@ -136,10 +131,18 @@ class GameFragment : Fragment() {
 
 
 
-    }
+
+
+
+
+
+
+
+
+}
 
     private fun initRecyclerView() {
-        juegosAdapter = GameAdapter(mutableListOf(),perfilViewModel)
+        juegosAdapter = GameAdapter(mutableListOf(),perfilViewModel,compartirViewModel)
         gameService = GameService()
 
 
@@ -199,7 +202,7 @@ class GameFragment : Fragment() {
 
     }
 
-    private suspend fun fetchLikedGamesFromFirestore(): List<String> {
+ /*   private suspend fun fetchLikedGamesFromFirestore(): List<String> {
         val likedGamesIds = mutableListOf<String>()
         val userLikedGamesRef = db.collection("JuegosGuardados").document(userId ?: "default_user")
 
@@ -210,7 +213,7 @@ class GameFragment : Fragment() {
         }
         return likedGamesIds
     }
-
+*/
 
     }
 

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.databinding.ItemLikedGameBinding
+import com.proyectofinal.redgame.ui.juegos.CompartirViewModel
 import com.proyectofinal.redgame.ui.juegos.GameViewModel
 import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
 
@@ -13,7 +14,7 @@ import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
 class PerfilViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ItemLikedGameBinding.bind(view)
-    fun render(gameLikedModel: GameModel, perfilViewModel: PerfilViewModel) {
+    fun render(gameLikedModel: GameModel, perfilViewModel: PerfilViewModel,compartirViewModel: CompartirViewModel) {
         //llamo a componentes de mi item
         binding.tvNombreJuego.text = gameLikedModel.name.toString()
         binding.tvValoracion.text = gameLikedModel.rating.toString()

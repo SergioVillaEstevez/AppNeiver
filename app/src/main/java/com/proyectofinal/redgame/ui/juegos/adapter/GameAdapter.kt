@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.data.model.GameModel
+import com.proyectofinal.redgame.ui.juegos.CompartirViewModel
 import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
 
-class GameAdapter(private var gameList: MutableList<GameModel> = mutableListOf(), private var perfilViewModel: PerfilViewModel
+class GameAdapter(private var gameList: MutableList<GameModel> = mutableListOf(), private var perfilViewModel: PerfilViewModel, private var compartirViewModel: CompartirViewModel
 ) :
     RecyclerView.Adapter<GameViewHolder>() {
 
@@ -54,7 +55,7 @@ class GameAdapter(private var gameList: MutableList<GameModel> = mutableListOf()
 
         val item = gameList[position]
 
-        holder.render(item,perfilViewModel)
+        holder.render(item,perfilViewModel,compartirViewModel)
         holder.updateButtonState(item.isLiked)
 
 

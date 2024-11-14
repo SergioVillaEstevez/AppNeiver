@@ -1,44 +1,56 @@
-package com.proyectofinal.redgame.ui.perfil
+package com.proyectofinal.redgame.ui.juegos
 
 import android.util.Log
-import androidx.fragment.app.viewModels
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.data.network.GameService
-import com.proyectofinal.redgame.ui.juegos.CompartirViewModel
-import com.proyectofinal.redgame.ui.juegos.GameViewModel
+import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
-class PerfilViewModel @Inject constructor(
+class CompartirViewModel @Inject  constructor(
+    private  var gameService: GameService
 
-    private var gameService : GameService
 ) : ViewModel() {
-
-    private lateinit var compartirViewModel: CompartirViewModel
-
-
+    private val db = FirebaseFirestore.getInstance()
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid // Obtener el ID del usuario
     private var _likedGame = MutableStateFlow<List<GameModel>>(emptyList())
     val likedGame: StateFlow<List<GameModel>> = _likedGame
 
-    private var _topValoracionJuego = MutableStateFlow<List<GameModel>>(emptyList())
-    val topValoracionJuego: StateFlow<List<GameModel>> = _topValoracionJuego
+   // private var _topValoracionJuego = MutableStateFlow<List<GameModel>>(emptyList())
+   // val topValoracionJuego: StateFlow<List<GameModel>> = _topValoracionJuego
 
 
 
     //private var gameService = GameService()
 
-    private val db = FirebaseFirestore.getInstance()
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid // Obtener el ID del usuario
+
+
 
     // Función para añadir un juego a la lista de "me gusta" y actualizar Firestore
+
+    private suspend fun fetchLikedGamesFromFirestore(): List<GameModel> {
+        val likedGames = mutableListOf<GameModel>()
+        val userLikedGamesRef = db.collection("JuegosGuardados").document(userId ?: "default_user")
+
+        val document = userLikedGamesRef.get().await() // Usando corutinas
+        if (document.exists()) {
+            val gamesData = document.get("games") as? List<Map<String, Any>> ?: emptyList()
+            likedGames.addAll(gamesData.map { GameModel.fromMap(it) })
+        }
+        return likedGames
+    }
+
     fun addLikedGame(game: GameModel) {
         viewModelScope.launch {
 
@@ -74,8 +86,7 @@ class PerfilViewModel @Inject constructor(
                 // Guardar la lista actualizada en Firestore
                 saveLikedGamesToFirestore(currentList)
 
-                // Si es necesario, también puedes actualizar Firestore directamente para reflejar el cambio
-                // Esto es útil si tienes una colección de "games" donde se almacena el estado de cada juego
+
 
             }
         }
@@ -193,26 +204,8 @@ class PerfilViewModel @Inject constructor(
     }
 
 
-    fun fetchTopValoracionJuegos() {
-        viewModelScope.launch {
-            try {
-                val gameValoracionList =
-                    gameService.getGames(page = 1, pageSize = 10, search = "", ordering = "-rating")
-                _topValoracionJuego.value = gameValoracionList
-                Log.d("GameViewModel", "Games fetched: $gameValoracionList")
-
-            } catch (e: Exception) {
-                Log.e("GameViewModel", "Error fetching games: ${e.message}")
-            }
 
 
-        }
 
 
-    }
 }
-
-
-
-
-

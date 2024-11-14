@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.data.model.GameModel
+import com.proyectofinal.redgame.ui.juegos.CompartirViewModel
 import com.proyectofinal.redgame.ui.juegos.GameViewModel
 import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
 
-class PerfilAdapter (private var likedList: MutableList<GameModel>,private var perfilViewModel: PerfilViewModel): RecyclerView.Adapter<PerfilViewHolder>(){
+class PerfilAdapter (private var likedList: MutableList<GameModel>,private var perfilViewModel: PerfilViewModel,private var compartirViewModel: CompartirViewModel): RecyclerView.Adapter<PerfilViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PerfilViewHolder {
         return PerfilViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_liked_game,parent,false)
@@ -22,7 +23,7 @@ class PerfilAdapter (private var likedList: MutableList<GameModel>,private var p
     override fun onBindViewHolder(holder: PerfilViewHolder, position: Int) {
 
         val item= likedList[position]
-        holder.render(item,perfilViewModel)
+        holder.render(item,perfilViewModel,compartirViewModel)
     }
     // Método para actualizar la lista
     fun updateList(newLikedGames: List<GameModel>) {

@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.databinding.ItemGameBinding
+import com.proyectofinal.redgame.ui.juegos.CompartirViewModel
 import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
 import com.proyectofinal.redgame.ui.perfil.perfilFragment
 
@@ -21,7 +22,8 @@ class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val binding = ItemGameBinding.bind(view)
 
 
-    fun render(gameModel: GameModel,perfilViewModel: PerfilViewModel ) {
+    fun render(gameModel: GameModel,perfilViewModel: PerfilViewModel,compartirViewModel: CompartirViewModel ) {
+
 
 
         val context = binding.tvNombreJuego.context
@@ -36,7 +38,8 @@ class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         //isLiked le explico que puede ser
         binding.btnMeGusta.text = if (gameModel.isLiked) "Guardado" else "+"
-        updateButtonState(gameModel.isLiked)
+
+
 
 
 
@@ -44,21 +47,23 @@ class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
             fun toggleLike(game: GameModel) {
                 game.isLiked = !game.isLiked
-                perfilViewModel.saveGameStateToDatabase(game) // Guardar el estado actualizado
+                compartirViewModel.saveGameStateToDatabase(game) // Guardar el estado actualizado
 
             }
 
 
             gameModel.isLiked = !gameModel.isLiked // Cambia el estado de "Me gusta"
 
-            updateButtonState(gameModel.isLiked)
+
 
 
 
          if (gameModel.isLiked) {
-                perfilViewModel.addLikedGame(gameModel)  // Añadir a la lista de "Me gusta"
+                compartirViewModel.addLikedGame(gameModel)
+         updateButtonState(true)// Añadir a la lista de "Me gusta"
             } else{
-                perfilViewModel.removeLikedGame(gameModel)
+                compartirViewModel.removeLikedGame(gameModel)
+             updateButtonState(false)
             }
 
 
