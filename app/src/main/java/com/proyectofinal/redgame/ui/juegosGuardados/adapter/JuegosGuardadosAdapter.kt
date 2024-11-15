@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.data.model.LikedGame
+import com.proyectofinal.redgame.ui.juegos.CompartirViewModel
 import com.proyectofinal.redgame.ui.juegosGuardados.JuegosGuardadosViewModel
 import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
 
-class JuegosGuardadosAdapter (private var likedGamelist : MutableList<GameModel>, private val perfilViewModel: PerfilViewModel) : RecyclerView.Adapter<JuegosGuardadosViewHolder>() {
+class JuegosGuardadosAdapter (private var likedGamelist : MutableList<GameModel>, private val perfilViewModel: PerfilViewModel,private var compartirViewModel: CompartirViewModel) : RecyclerView.Adapter<JuegosGuardadosViewHolder>() {
 
    fun updateListLikedGame(newGame: List<GameModel>){
 
@@ -28,7 +29,7 @@ class JuegosGuardadosAdapter (private var likedGamelist : MutableList<GameModel>
 
     override fun onBindViewHolder(holder: JuegosGuardadosViewHolder, position: Int) {
         val item= likedGamelist[position]
-        holder.render(item,perfilViewModel)
+        holder.render(item,perfilViewModel,compartirViewModel)
 
     }
 

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.databinding.ItemTodosGamesGuardadosBinding
+import com.proyectofinal.redgame.ui.juegos.CompartirViewModel
 import com.proyectofinal.redgame.ui.juegosGuardados.JuegosGuardadosViewModel
 import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
 
@@ -12,7 +13,7 @@ class JuegosGuardadosViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     val binding = ItemTodosGamesGuardadosBinding.bind(view)
 
-    fun render(gameModel: GameModel, perfilViewModel: PerfilViewModel) {
+    fun render(gameModel: GameModel, perfilViewModel: PerfilViewModel,compartirViewModel: CompartirViewModel) {
 
         binding.tvNombreJuego.text = gameModel.name.toString()
         binding.tvValoracion.text = gameModel.rating.toString()
@@ -23,7 +24,7 @@ class JuegosGuardadosViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
           if(gameModel.isLiked){
 
-              perfilViewModel.removeLikedGame(gameModel)
+              compartirViewModel.removeLikedGame(gameModel)
           }
 
 

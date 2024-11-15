@@ -30,11 +30,60 @@ class CompartirViewModel @Inject  constructor(
    // private var _topValoracionJuego = MutableStateFlow<List<GameModel>>(emptyList())
    // val topValoracionJuego: StateFlow<List<GameModel>> = _topValoracionJuego
 
-
+    init {
+        // Cargar la lista de juegos guardados al iniciar el ViewModel
+        viewModelScope.launch {
+            _likedGame.value = fetchLikedGamesFromFirestore()
+            observeLikedGames()
+        }
+    }
 
     //private var gameService = GameService()
+    fun observeLikedGames() {
+        val userLikedGamesRef = db.collection("JuegosGuardados").document(userId ?: "default_user")
+
+        // Usa un SnapshotListener para escuchar cambios en tiempo real
+        userLikedGamesRef.addSnapshotListener { documentSnapshot, e ->
+            if (e != null) {
+                Log.w("CompartirViewModel", "Listen failed.", e)
+                return@addSnapshotListener
+            }
+
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                val gamesData = documentSnapshot.get("games") as? List<Map<String, Any>> ?: emptyList()
+                val updatedGames = gamesData.map { GameModel.fromMap(it) }
+
+                // Actualiza el estado local
+                _likedGame.value = updatedGames
+            }
+        }
+    }
 
 
+    fun fetchlikegameScope(){
+    viewModelScope.launch {
+        val games = fetchLikedGamesFromFirestore()
+        _likedGame.value=games
+    }
+}
+
+    fun updateGameLikeStatus(game: GameModel, isLiked: Boolean) {
+        viewModelScope.launch {
+            // Aquí puedes actualizar el estado en Firestore
+            val updatedGame = game.copy(isLiked = isLiked)
+
+            // Actualizar la lista local
+            val updatedGames = _likedGame.value?.toMutableList() ?: mutableListOf()
+            val index = updatedGames.indexOfFirst { it.id == game.id }
+            if (index != -1) {
+                updatedGames[index] = updatedGame
+                _likedGame.value = updatedGames
+            }
+
+            // Guardar en Firestore
+            saveLikedGamesToFirestore(updatedGames)
+        }
+    }
 
 
     // Función para añadir un juego a la lista de "me gusta" y actualizar Firestore
@@ -76,18 +125,25 @@ class CompartirViewModel @Inject  constructor(
         viewModelScope.launch {
             val currentList = _likedGame.value.toMutableList()
 
-            // Eliminar el juego de la lista local
-            if (currentList.removeIf { it.id == game.id }) {
-                game.isLiked = false  // Establecer isLiked a false
+            // Verificar si el juego está en la lista y eliminarlo
+            val gameToRemove = currentList.find { it.id == game.id }
+            if (gameToRemove != null) {
+                // Establecer el estado de "isLiked" a false para la base de datos
+                gameToRemove.isLiked = false
+                Log.d("CompartirViewModel", "${gameToRemove.name.toString()} // ${gameToRemove.isLiked}")
 
-                // Actualizar el estado visual (UI)
+                // Eliminarlo de la lista local
+                currentList.remove(gameToRemove)
+
+                // Actualizar la lista local
                 _likedGame.value = currentList
 
-                // Guardar la lista actualizada en Firestore
+                // Guardar en Firestore
                 saveLikedGamesToFirestore(currentList)
 
-
-
+                //Recargar la lista de Firestore después de la actualizació
+                val updatedGames = fetchLikedGamesFromFirestore()
+                _likedGame.value = updatedGames
             }
         }
     }
@@ -116,79 +172,40 @@ class CompartirViewModel @Inject  constructor(
     }
 
 
-    fun fetchLikedGames(gameViewModel: GameViewModel) {
-        viewModelScope.launch {
-            db.collection("JuegosGuardados").document(userId ?: "default_user")
-                .get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        // Obtiene los juegos guardados en Firestore
-                        val gamesData = document.data?.get("games") as? List<Map<String, Any>> ?: emptyList()
-                        val likedGames = gamesData.map { GameModel.fromMap(it) }
-
-                        // Actualiza el estado de los juegos guardados
-                        _likedGame.value = likedGames
-
-                        // Sincroniza el estado de la lista de juegos con la de Firestore
-                        gameViewModel.getGameList().forEach { game ->
-                            // Si el juego está en Firestore, se marca como 'liked'
-                            likedGames.find { it.id == game.id }?.let { likedGame ->
-                                game.isLiked = likedGame.isLiked
-                            }
-                        }
-
-                        // Notifica a ViewModel que la lista ha cambiado
-                        gameViewModel.notifyGameListChanged()
-                    } else {
-                        Log.d("PerfilViewModel", "No liked games found for user.")
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Log.e("PerfilViewModel", "Error fetching liked games: ${e.message}")
-                }
-        }
-    }
 
 
     fun saveGameStateToDatabase(game: GameModel) {
-        val userLikedGamesRef =
-            db.collection("JuegosGuardados").document(userId ?: "default_user")
+        val userLikedGamesRef = db.collection("JuegosGuardados").document(userId ?: "default_user")
 
         // Obtener la lista actual de juegos guardados
         userLikedGamesRef.get().addOnSuccessListener { document ->
             if (document != null && document.exists()) {
-                // Obtiene la lista actual de juegos
-                val gamesData = document.get("games") as? List<Map<String, Any>> ?: emptyList()
+                // Obtiene la lista actual de juegos (Asegúrate de que sea una lista válida)
+                val gamesData = document.get("games") as? List<Map<String, Any>> ?: mutableListOf()
 
                 // Busca si el juego ya existe en la lista
                 val updatedGames = gamesData.toMutableList()
-                val existingGameIndex =
-                    updatedGames.indexOfFirst { (it["id"] as? String) == game.id }
+                val existingGameIndex = updatedGames.indexOfFirst { (it["id"] as? String) == game.id }
+
+                // Prepara el juego para la actualización
+                val gameData = mapOf(
+                    "id" to game.id,
+                    "name" to (game.name ?: ""),  // Si `name` es null, se asigna una cadena vacía
+                    "isLiked" to game.isLiked,
+                    "background_image" to (game.backgroundImage ?: ""), // Usa una cadena vacía si es null
+                    "rating" to (game.rating ?: 0f) // Usa 0f si el rating es null
+                )
 
                 if (existingGameIndex != -1) {
                     // Actualiza el juego existente
-                    updatedGames[existingGameIndex] = mapOf(
-                        "id" to game.id,
-                        "name" to game.name,
-                        "isLiked" to game.isLiked,
-                        "background_image" to game.backgroundImage,
-                        "rating" to game.rating
-                    )
+                    updatedGames[existingGameIndex] = gameData
                 } else {
                     // Agrega el juego nuevo a la lista
-                    updatedGames.add(
-                        mapOf(
-                            "id" to game.id,
-                            "name" to game.name,
-                            "isLiked" to game.isLiked,
-                            "background_image" to game.backgroundImage,
-                            "rating" to game.rating
-                        )
-                    )
+                    updatedGames.add(gameData)
                 }
 
                 // Guarda la lista actualizada de juegos en Firestore
-                userLikedGamesRef.update(mapOf("games" to updatedGames))
+                userLikedGamesRef.update("games", updatedGames)
                     .addOnSuccessListener {
                         println("Estado del juego guardado con éxito.")
                     }
@@ -196,12 +213,13 @@ class CompartirViewModel @Inject  constructor(
                         println("Error al guardar el estado del juego: ${e.message}")
                     }
             } else {
-                println("El documento no existe.")
+                println("El documento no existe o está vacío.")
             }
         }.addOnFailureListener { e ->
             println("Error al obtener la lista de juegos: ${e.message}")
         }
     }
+
 
 
 

@@ -38,25 +38,6 @@ class PerfilViewModel @Inject constructor(
     private val db = FirebaseFirestore.getInstance()
     private val userId = FirebaseAuth.getInstance().currentUser?.uid // Obtener el ID del usuario
 
-    // Función para añadir un juego a la lista de "me gusta" y actualizar Firestore
-    fun addLikedGame(game: GameModel) {
-        viewModelScope.launch {
-
-
-            val currentList = _likedGame.value.toMutableList()
-            if (!currentList.any { it.id == game.id }) {
-                game.isLiked = true // Asegúrate de que isLiked sea verdadero
-                currentList.add(game)
-                _likedGame.value = currentList // Actualiza el estado local
-
-                // Guardar en Firestore
-                saveLikedGamesToFirestore(currentList)
-
-
-
-            }
-        }
-    }
 
 
     // Función para eliminar un juego de la lista de "me gusta" y actualizar Firestore
@@ -64,18 +45,22 @@ class PerfilViewModel @Inject constructor(
         viewModelScope.launch {
             val currentList = _likedGame.value.toMutableList()
 
-            // Eliminar el juego de la lista local
-            if (currentList.removeIf { it.id == game.id }) {
-                game.isLiked = false  // Establecer isLiked a false
+            // Verificar si el juego está en la lista y eliminarlo
+            val gameToRemove = currentList.find { it.id == game.id }
+            if (gameToRemove != null) {
+                // Establecer el estado de "isLiked" a false para la base de datos
+                gameToRemove.isLiked = false
 
-                // Actualizar el estado visual (UI)
+                // Eliminarlo de la lista local
+                currentList.remove(gameToRemove)
+
+                // Actualizar la lista local
                 _likedGame.value = currentList
 
-                // Guardar la lista actualizada en Firestore
+                // Guardar en Firestore
                 saveLikedGamesToFirestore(currentList)
 
-                // Si es necesario, también puedes actualizar Firestore directamente para reflejar el cambio
-                // Esto es útil si tienes una colección de "games" donde se almacena el estado de cada juego
+
 
             }
         }
@@ -139,58 +124,6 @@ class PerfilViewModel @Inject constructor(
     }
 
 
-    fun saveGameStateToDatabase(game: GameModel) {
-        val userLikedGamesRef =
-            db.collection("JuegosGuardados").document(userId ?: "default_user")
-
-        // Obtener la lista actual de juegos guardados
-        userLikedGamesRef.get().addOnSuccessListener { document ->
-            if (document != null && document.exists()) {
-                // Obtiene la lista actual de juegos
-                val gamesData = document.get("games") as? List<Map<String, Any>> ?: emptyList()
-
-                // Busca si el juego ya existe en la lista
-                val updatedGames = gamesData.toMutableList()
-                val existingGameIndex =
-                    updatedGames.indexOfFirst { (it["id"] as? String) == game.id }
-
-                if (existingGameIndex != -1) {
-                    // Actualiza el juego existente
-                    updatedGames[existingGameIndex] = mapOf(
-                        "id" to game.id,
-                        "name" to game.name,
-                        "isLiked" to game.isLiked,
-                        "background_image" to game.backgroundImage,
-                        "rating" to game.rating
-                    )
-                } else {
-                    // Agrega el juego nuevo a la lista
-                    updatedGames.add(
-                        mapOf(
-                            "id" to game.id,
-                            "name" to game.name,
-                            "isLiked" to game.isLiked,
-                            "background_image" to game.backgroundImage,
-                            "rating" to game.rating
-                        )
-                    )
-                }
-
-                // Guarda la lista actualizada de juegos en Firestore
-                userLikedGamesRef.update(mapOf("games" to updatedGames))
-                    .addOnSuccessListener {
-                        println("Estado del juego guardado con éxito.")
-                    }
-                    .addOnFailureListener { e ->
-                        println("Error al guardar el estado del juego: ${e.message}")
-                    }
-            } else {
-                println("El documento no existe.")
-            }
-        }.addOnFailureListener { e ->
-            println("Error al obtener la lista de juegos: ${e.message}")
-        }
-    }
 
 
     fun fetchTopValoracionJuegos() {

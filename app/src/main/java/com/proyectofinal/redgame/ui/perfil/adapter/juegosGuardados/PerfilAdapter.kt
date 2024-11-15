@@ -24,6 +24,7 @@ class PerfilAdapter (private var likedList: MutableList<GameModel>,private var p
 
         val item= likedList[position]
         holder.render(item,perfilViewModel,compartirViewModel)
+
     }
     // Método para actualizar la lista
     fun updateList(newLikedGames: List<GameModel>) {

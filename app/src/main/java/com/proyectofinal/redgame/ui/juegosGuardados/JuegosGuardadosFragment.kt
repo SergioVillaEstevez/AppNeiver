@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.proyectofinal.redgame.databinding.FragmentJuegosGuardadosBinding
+import com.proyectofinal.redgame.ui.juegos.CompartirViewModel
 import com.proyectofinal.redgame.ui.juegos.GameViewModel
 import com.proyectofinal.redgame.ui.juegosGuardados.adapter.JuegosGuardadosAdapter
 import com.proyectofinal.redgame.ui.perfil.PerfilViewModel
@@ -26,6 +27,7 @@ class JuegosGuardadosFragment : Fragment() {
 
     private val gameViewModel: GameViewModel by viewModels()
     private val perfilViewModel: PerfilViewModel by viewModels()
+    private val compartirViewModel:CompartirViewModel by viewModels()
 
 
     private var _binding: FragmentJuegosGuardadosBinding? = null
@@ -55,7 +57,7 @@ class JuegosGuardadosFragment : Fragment() {
     private fun initRecycleView() {
 
 
-        juegosGuardadosAdapter = JuegosGuardadosAdapter(mutableListOf(), perfilViewModel)
+        juegosGuardadosAdapter = JuegosGuardadosAdapter(mutableListOf(), perfilViewModel,compartirViewModel)
 
 
 
@@ -75,7 +77,7 @@ class JuegosGuardadosFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
 
-                perfilViewModel.likedGame.collect{ likedGame ->
+                compartirViewModel.likedGame.collect{ likedGame ->
 
                     juegosGuardadosAdapter.updateListLikedGame(likedGame)
 

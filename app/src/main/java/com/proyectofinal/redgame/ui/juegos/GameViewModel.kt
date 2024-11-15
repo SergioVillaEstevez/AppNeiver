@@ -34,17 +34,6 @@ class GameViewModel @Inject constructor(
     }
 
     // Función para actualizar solo el estado 'isLiked' de un juego
-    fun updateGameLikedState(gameId: String, isLiked: Boolean) {
-        val updatedList = _game.value.map {
-            if (it.id == gameId) {
-                it.copy(isLiked = isLiked) // Actualiza solo el 'isLiked'
-            } else {
-                it
-            }
-        }
-        _game.value = updatedList // Actualiza el estado con la nueva lista
-    }
-
 
 
     fun fetchGames(search: String) {

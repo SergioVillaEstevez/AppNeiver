@@ -121,7 +121,7 @@ class perfilFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // Cambiar compartirViewModel por perfilViewModel si likedGame está en perfilViewModel
-                perfilViewModel.likedGame.collect { likedGames ->
+                compartirViewModel.likedGame.collect { likedGames ->
                     Log.d("PerfilFragment", "Liked games count: ${likedGames.size}")
 
                     updateButtonStatesInGameViewModel(likedGames)

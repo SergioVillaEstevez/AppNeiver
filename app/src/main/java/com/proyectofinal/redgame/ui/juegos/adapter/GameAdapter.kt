@@ -1,5 +1,6 @@
 package com.proyectofinal.redgame.ui.juegos.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -56,6 +57,7 @@ class GameAdapter(private var gameList: MutableList<GameModel> = mutableListOf()
         val item = gameList[position]
 
         holder.render(item,perfilViewModel,compartirViewModel)
+        Log.d("GameAdapter","el juego es ${item.isLiked}")
         holder.updateButtonState(item.isLiked)
 
 

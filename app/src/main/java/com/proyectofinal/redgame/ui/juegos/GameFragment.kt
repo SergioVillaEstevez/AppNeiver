@@ -64,9 +64,15 @@ class GameFragment : Fragment() {
     ): View {
         _binding = FragmentJuegosBinding.inflate(layoutInflater, container, false)
 
-
+        lifecycleScope.launch {
+            compartirViewModel.fetchlikegameScope()
+        }
         return binding.root
 
+    }
+    override fun onResume() {
+        super.onResume()
+        compartirViewModel.fetchlikegameScope()  // Recargar los datos
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -117,10 +123,14 @@ class GameFragment : Fragment() {
                 compartirViewModel.likedGame.collect { likedGames ->  // Ahora recolectamos una lista de GameModel completos
                     juegosViewModel.game.collect { games ->
                         val updatedGames = games.map { game ->
+
                             val isLiked = likedGames.any { it.id == game.id }  // Comparamos si el ID del juego está en la lista de juegos "gustados"
                             game.copy(isLiked = isLiked)  // Creamos una copia del juego con el estado actualizado
                         }
+
                         juegosAdapter.updateList(updatedGames)  // Actualizamos el RecyclerView con los juegos modificados
+
+
                     }
                 }
             }
@@ -148,6 +158,7 @@ class GameFragment : Fragment() {
 
         binding.recyclerViewJuegos.apply {
             layoutManager = LinearLayoutManager(context)
+
             adapter = juegosAdapter
 
         }

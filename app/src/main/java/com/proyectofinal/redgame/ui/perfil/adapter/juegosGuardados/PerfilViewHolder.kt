@@ -30,7 +30,8 @@ class PerfilViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 
 
-                perfilViewModel.removeLikedGame(gameLikedModel)
+                compartirViewModel.removeLikedGame(gameLikedModel)
+
 
                 Log.d("PerfilViewHolder", "El juego ${gameLikedModel.name.toString()} se ha eliminado y ahora es ${gameLikedModel.isLiked}")
 

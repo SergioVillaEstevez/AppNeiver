@@ -104,7 +104,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.juegosFragment -> {
                     // Verificamos si ya estamos en juegosFragment para evitar reinstanciación
                     if (navController.currentDestination?.id != R.id.juegosFragment) {
-                        navController.popBackStack(R.id.juegosFragment, false)
+                        navController.popBackStack(R.id.juegosFragment, false )
+
 
                     }
                     true

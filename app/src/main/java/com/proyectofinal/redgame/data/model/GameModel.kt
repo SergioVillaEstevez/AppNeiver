@@ -7,8 +7,8 @@ import com.proyectofinal.redgame.R
 data class GameModel(
     @SerializedName("id") val id: String = "", // Cambiado a String para Firestore
     @SerializedName("name") val name: String = "",
-    @SerializedName("released") val released: String = "",
-    @SerializedName("background_image") val backgroundImage: String = "",
+    @SerializedName("released") val released: String? = null,
+    @SerializedName("background_image") val backgroundImage: String? = null,
     @SerializedName("rating") val rating: Float = 0f,
     var isLiked: Boolean = false
 ) {
@@ -17,7 +17,7 @@ data class GameModel(
             return GameModel(
                 id = map["id"] as? String ?: "", // Manejo de nulos
                 name = map["name"] as? String ?: "",
-                released = map["released"] as? String ?: "",
+                released = map["released"] as? String,
                 backgroundImage = map["background_image"] as? String ?: "", // Cambia a 'background_image'
                 rating = (map["rating"] as? Number)?.toFloat() ?: 0f,
                 isLiked = map["isLiked"] as? Boolean ?: false
