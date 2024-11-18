@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/primary"
+    android:orientation="vertical"
     tools:context=".ui.juegos.GameFragment">
 
   <!-- Título de Juegos Guardados -->
@@ -83,6 +84,43 @@
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/tvRecomendados">
+
+  </androidx.recyclerview.widget.RecyclerView>
+  <TextView
+      android:id="@+id/tvUsuarios"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="24dp"
+      android:text="Lista de usuarios"
+      android:textColor="@color/gold"
+      android:textSize="18dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/recyclerViewPerfilRecomendaciones" />
+
+  <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/btnVerTodoUsuarios"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
+      android:background="@null"
+      android:text="ver todos"
+      android:textColor="@color/white"
+      android:textSize="10dp"
+      app:layout_constraintStart_toEndOf="@+id/tvUsuarios"
+      app:layout_constraintTop_toBottomOf="@+id/recyclerViewPerfilRecomendaciones" />
+
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recyclerViewPerfilUsuarios"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/tvUsuarios"
+      app:layout_constraintVertical_bias="0.0">
 
   </androidx.recyclerview.widget.RecyclerView>
 

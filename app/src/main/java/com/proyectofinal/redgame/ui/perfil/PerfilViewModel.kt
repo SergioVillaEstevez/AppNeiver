@@ -7,13 +7,16 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.proyectofinal.redgame.data.model.GameModel
+import com.proyectofinal.redgame.data.model.ListaUsuariosModel
 import com.proyectofinal.redgame.data.network.GameService
+import com.proyectofinal.redgame.login.data.model.UsuarioModel
 import com.proyectofinal.redgame.ui.juegos.CompartirViewModel
 import com.proyectofinal.redgame.ui.juegos.GameViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,6 +33,9 @@ class PerfilViewModel @Inject constructor(
 
     private var _topValoracionJuego = MutableStateFlow<List<GameModel>>(emptyList())
     val topValoracionJuego: StateFlow<List<GameModel>> = _topValoracionJuego
+
+    private var _listaUsuarios = MutableStateFlow<List<ListaUsuariosModel>>(emptyList())
+    val listaUsuarios: StateFlow<List<ListaUsuariosModel>> = _listaUsuarios
 
 
 
@@ -122,9 +128,35 @@ class PerfilViewModel @Inject constructor(
                 }
         }
     }
+    fun fetchListaUsuarios() {
+        viewModelScope.launch {
+            try {
+                // Recupera todos los documentos de la colección "Usuarios"
+                val snapshot = db.collection("Usuarios").get().await()
+
+                // Mapea los documentos a una lista de objetos UsuarioModel
+                val usuarios = snapshot.documents.mapNotNull { document ->
+                    val nombreUsuario = document.getString("nombre_usuario")
+                    val nombreCompleto = document.getString("nombre_completo")
 
 
 
+                    // Asegúrate de que todos los campos estén disponibles
+                    if (nombreUsuario != null && nombreCompleto != null ) {
+                        ListaUsuariosModel(nombreUsuario, nombreCompleto)
+                    } else {
+                        null
+                    }
+                }
+
+                // Asigna la lista de usuarios al StateFlow
+                _listaUsuarios.value = usuarios
+            } catch (e: Exception) {
+                Log.e("PerfilViewModel", "Error al obtener usuarios: ${e.message}")
+                _listaUsuarios.value = emptyList() // En caso de error, dejamos la lista vacía
+            }
+        }
+    }
 
     fun fetchTopValoracionJuegos() {
         viewModelScope.launch {
@@ -140,7 +172,6 @@ class PerfilViewModel @Inject constructor(
 
 
         }
-
 
     }
 }
