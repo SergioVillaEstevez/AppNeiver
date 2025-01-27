@@ -1,6 +1,7 @@
 package com.proyectofinal.redgame.ui.juegosGuardados.adapter
 
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.proyectofinal.redgame.data.model.GameModel
@@ -18,6 +19,7 @@ class JuegosGuardadosViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         binding.tvNombreJuego.text = gameModel.name.toString()
         binding.tvValoracion.text = gameModel.rating.toString()
         Glide.with(binding.ivGame.context).load(gameModel.backgroundImage).into(binding.ivGame)
+
 
 
       binding.btnEliminar.setOnClickListener(){

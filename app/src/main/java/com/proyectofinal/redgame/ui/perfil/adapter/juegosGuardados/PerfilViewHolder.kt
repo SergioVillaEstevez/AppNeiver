@@ -2,6 +2,7 @@ package com.proyectofinal.redgame.ui.perfil.adapter.juegosGuardados
 
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.proyectofinal.redgame.data.model.GameModel
@@ -21,6 +22,8 @@ class PerfilViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         Glide.with(binding.ivGame.context).load(gameLikedModel.backgroundImage).into(binding.ivGame)
         Log.d("PerfilViewHolder", "Cargando imagen desde URL: ${gameLikedModel.backgroundImage}")
         Log.d("PerfilViewHolder", "Rendering game: ${gameLikedModel.name}")
+
+
 
         binding.btnEliminar.setOnClickListener(){
 

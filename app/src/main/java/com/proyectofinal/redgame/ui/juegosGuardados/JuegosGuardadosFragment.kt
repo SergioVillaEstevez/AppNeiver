@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.proyectofinal.redgame.databinding.FragmentJuegosGuardadosBinding
 import com.proyectofinal.redgame.ui.juegos.CompartirViewModel
 import com.proyectofinal.redgame.ui.juegos.GameViewModel
@@ -26,6 +27,7 @@ class JuegosGuardadosFragment : Fragment() {
     private lateinit var juegosGuardadosAdapter: JuegosGuardadosAdapter
 
     private val gameViewModel: GameViewModel by viewModels()
+
     private val perfilViewModel: PerfilViewModel by viewModels()
     private val compartirViewModel:CompartirViewModel by viewModels()
 

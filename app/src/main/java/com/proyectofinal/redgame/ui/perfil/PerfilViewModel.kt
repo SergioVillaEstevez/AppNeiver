@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.data.model.ListaUsuariosModel
 import com.proyectofinal.redgame.data.network.GameService
@@ -42,7 +43,8 @@ class PerfilViewModel @Inject constructor(
     //private var gameService = GameService()
 
     private val db = FirebaseFirestore.getInstance()
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid // Obtener el ID del usuario
+    private val userId=FirebaseAuth.getInstance().currentUser?.uid
+
 
 
 
@@ -76,29 +78,35 @@ class PerfilViewModel @Inject constructor(
 
     // Función para guardar la lista de juegos "gustados" en Firestore
     private fun saveLikedGamesToFirestore(games: List<GameModel>) {
-        val userLikedGamesRef = db.collection("JuegosGuardados").document(userId ?: "default_user")
+        if (userId != null) {
+            val userLikedGamesRef = db.collection("JuegosGuardados").document(userId)
+            // Usa userLikedGamesRef para trabajar con los datos del usuario actual
 
-        userLikedGamesRef.update(mapOf("games" to games.map {
-            mapOf(
-                "id" to it.id,
-                "name" to it.name,
-                "isLiked" to it.isLiked,
-                "background_image" to it.backgroundImage,
-                "rating" to it.rating
-            )
-        }))
-            .addOnSuccessListener {
-                println("Lista de juegos 'gustados' guardada con éxito.")
-            }
-            .addOnFailureListener { e ->
-                println("Error al guardar la lista de juegos: ${e.message}")
-            }
+
+            userLikedGamesRef.update(mapOf("games" to games.map {
+                mapOf(
+                    "id" to it.id,
+                    "name" to it.name,
+                    "isLiked" to it.isLiked,
+                    "background_image" to it.backgroundImage,
+                    "rating" to it.rating
+                )
+            }))
+                .addOnSuccessListener {
+                    println("Lista de juegos 'gustados' guardada con éxito.")
+                }
+                .addOnFailureListener { e ->
+                    println("Error al guardar la lista de juegos: ${e.message}")
+                }
+        } else {
+            // Maneja el caso en el que no haya un usuario autenticado
+            Log.e("Error", "Usuario no autenticado")
+        }
     }
-
 
     fun fetchLikedGames(gameViewModel: GameViewModel) {
         viewModelScope.launch {
-            db.collection("JuegosGuardados").document(userId ?: "default_user")
+            db.collection("JuegosGuardados").document(userId?: " default_user")
                 .get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {

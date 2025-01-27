@@ -12,6 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.proyectofinal.redgame.R
 import com.proyectofinal.redgame.data.model.GameModel
 import com.proyectofinal.redgame.databinding.FragmentPerfilBinding
@@ -30,6 +32,9 @@ import kotlinx.coroutines.launch
 class perfilFragment : Fragment() {
 
     private var _binding: FragmentPerfilBinding? = null
+
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid
+
     private val binding get() = _binding!!
 
     private lateinit var perfilAdapter: PerfilAdapter
@@ -61,6 +66,12 @@ class perfilFragment : Fragment() {
             findNavController().navigate(R.id.action_perfilFragment_to_juegosGuardadosFragment)
 
         }
+        binding.btnVerTodoRecomendado.setOnClickListener(){
+            println("hola mundo")
+            findNavController().navigate(R.id.action_perfilFragment_to_MejorValoradosFragment)
+
+        }
+
 
         return binding.root
 
@@ -80,6 +91,7 @@ class perfilFragment : Fragment() {
         perfilViewModel.fetchLikedGames(gameViewModel)
         perfilViewModel.fetchTopValoracionJuegos()
         perfilViewModel.fetchListaUsuarios()
+        setUsernameInTextView()
 
 
 
@@ -182,6 +194,31 @@ class perfilFragment : Fragment() {
 
         _binding = null
 
+    }
+
+    private fun setUsernameInTextView() {
+        val userEmail = FirebaseAuth.getInstance().currentUser?.email
+        if (userEmail != null) {
+            val db = FirebaseFirestore.getInstance()
+            val userDocRef = db.collection("Usuarios").document(userEmail)
+
+            userDocRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        // Obtén el campo "nombre_usuario" del documento
+                        val username = document.getString("nombre_usuario")
+                        binding.tvNombreUsuario.text = username ?: "Sin nombre de usuario"
+                    } else {
+                        binding.tvNombreUsuario.text = "Usuario no encontrado"
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    exception.printStackTrace()
+                    binding.tvNombreUsuario.text = "Error al obtener usuario"
+                }
+        } else {
+            binding.tvNombreUsuario.text = "No autenticado"
+        }
     }
 
 

@@ -60,7 +60,7 @@ class MisDatosActivity : AppCompatActivity() {
                     val nombreCompleto = document.getString("nombre_completo")
                     val nombreUsuario = document.getString("nombre_usuario")
                     val correo = document.getString("correo_electronico")
-                    val password = document.getString("password")
+
 
                     // Verificamos si cada valor no es null y luego lo asignamos al hint correspondiente
                     if (!nombreCompleto.isNullOrEmpty()) {
@@ -72,9 +72,7 @@ class MisDatosActivity : AppCompatActivity() {
                     if (!correo.isNullOrEmpty()) {
                         binding.tvCorreoElectronicoUpdate.text = correo
                     }
-                    if (!password.isNullOrEmpty()) {
-                        binding.tvPasswordUpdate.text = password
-                    }
+
                 } else {
                     Log.d("Firestore", "No se encontró el documento")
                 }

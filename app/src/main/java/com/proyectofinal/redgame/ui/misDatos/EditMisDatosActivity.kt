@@ -19,7 +19,7 @@ class EditMisDatosActivity : AppCompatActivity() {
 
         binding.btnActualizarDatos.setOnClickListener(){
 
-            if(binding.etNombreCompletoUpdate.text.isEmpty()|| binding.etNombreUsuarioUpdate.text.isEmpty()|| binding.etPasswordUpdate.text.isEmpty()||binding.etCorreoElectronicoUpdate.text.isEmpty() ){
+            if(binding.etNombreCompletoUpdate.text.isEmpty()|| binding.etNombreUsuarioUpdate.text.isEmpty()||binding.etCorreoElectronicoUpdate.text.isEmpty() ){
 
                 Toast.makeText(this, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show()
 
@@ -49,7 +49,6 @@ class EditMisDatosActivity : AppCompatActivity() {
     fun updateUserDataBase(){
 
         val email= binding.etCorreoElectronicoUpdate.text.toString().trim()
-        val password= binding.etPasswordUpdate.text.toString().trim()
         val nombre_completo= binding.etNombreCompletoUpdate.text.toString()
         val nombre_usuario= binding.etNombreUsuarioUpdate.text.toString()
 
@@ -57,8 +56,7 @@ class EditMisDatosActivity : AppCompatActivity() {
         val userData= hashMapOf(
             "nombre_usuario" to nombre_usuario,
             "nombre_completo" to nombre_completo,
-            "correo_electronico" to email,
-            "password" to password
+            "correo_electronico" to email
         )
 
         db.collection("Usuarios").document(email).set(userData)

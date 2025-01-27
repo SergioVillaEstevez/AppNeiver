@@ -3,6 +3,7 @@ package com.proyectofinal.redgame.login.ui.inicio
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.proyectofinal.redgame.databinding.ActivityInicioSisionBinding
@@ -42,7 +43,10 @@ class InicioSesionActivity : AppCompatActivity() {
        val usuario =  binding.etUsuario.text.toString()
         val password= binding.etPassword.text.toString()
 
-
+        if (usuario.isEmpty() || password.isEmpty()) {
+            Log.d("IniciarActivity", "Error: Campos vacíos")
+            Toast.makeText(applicationContext, "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show()
+        }
         auth.loginUser(usuario,password){success, userId->
 
             if(success){
@@ -53,6 +57,7 @@ class InicioSesionActivity : AppCompatActivity() {
             else{
 
                 Log.d("IniciarActivity", "Error usuario o contraseña")
+                Toast.makeText(applicationContext, "Usuario o contraseña incorrectos. Inténtelo de nuevo.", Toast.LENGTH_SHORT).show()
             }
 
 

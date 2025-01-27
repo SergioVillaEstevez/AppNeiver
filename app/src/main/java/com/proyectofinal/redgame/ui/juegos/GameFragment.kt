@@ -213,18 +213,6 @@ class GameFragment : Fragment() {
 
     }
 
- /*   private suspend fun fetchLikedGamesFromFirestore(): List<String> {
-        val likedGamesIds = mutableListOf<String>()
-        val userLikedGamesRef = db.collection("JuegosGuardados").document(userId ?: "default_user")
-
-        val document = userLikedGamesRef.get().await() // Usando corutinas
-        if (document.exists()) {
-            val gamesData = document.get("games") as? List<Map<String, Any>> ?: emptyList()
-            likedGamesIds.addAll(gamesData.map { it["id"] as String })
-        }
-        return likedGamesIds
-    }
-*/
 
     }
 

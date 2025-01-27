@@ -24,12 +24,12 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivGame"
-                android:layout_width="150dp"
-                android:layout_height="100dp"
-                tools:background="@color/gold"
+                android:layout_width="244dp"
+                android:layout_height="104dp"
+                android:layout_margin="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="10dp" />
+                tools:background="@color/gold" />
 
             <TextView
                 android:id="@+id/tvNombreJuego"
@@ -56,19 +56,6 @@
                 android:textColor="@color/secondary"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@id/ivGame"
-                app:layout_constraintTop_toTopOf="@id/ivGame" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/button_border"
-                android:text="Información"
-                android:textColor="@color/secondary"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@id/btnEliminar"
                 app:layout_constraintTop_toTopOf="@id/ivGame" />
 
             <TextView

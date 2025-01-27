@@ -65,23 +65,6 @@
     </TextView>
 
 
-    <TextView
-        android:id="@+id/tvPasswordUpdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:textSize="20sp"
-        android:padding="10dp"
-        android:textColor="@color/accent"
-        android:textColorHint="@color/accent"
-        android:background="@drawable/button_border"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCorreoElectronicoUpdate"
-        tools:text="password">
-
-    </TextView>
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnEditDatos"
         android:layout_width="wrap_content"
@@ -92,8 +75,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPasswordUpdate"
-        app:layout_constraintVertical_bias="0.253">
+        app:layout_constraintTop_toBottomOf="@id/tvCorreoElectronicoUpdate"
+        app:layout_constraintVertical_bias="0.231">
 
     </androidx.appcompat.widget.AppCompatButton>
 
@@ -110,7 +93,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnEditDatos"
-        app:layout_constraintVertical_bias="0.084"
+        app:layout_constraintVertical_bias="0.045"
         tools:ignore="MissingConstraints">
 
     </androidx.appcompat.widget.AppCompatButton>

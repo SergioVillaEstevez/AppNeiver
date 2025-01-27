@@ -18,6 +18,8 @@
         <action
             android:id="@+id/action_perfilFragment_to_juegosGuardadosFragment"
             app:destination="@id/juegosGuardadosFragment" />
+        <action  android:id="@+id/action_perfilFragment_to_MejorValoradosFragment"
+            app:destination="@id/mejorValoradoFragment" />
     </fragment>
     <fragment
         android:id="@+id/foroFragment"
@@ -33,4 +35,11 @@
             android:id="@+id/action_juegosGuardadosFragment_to_perfilFragment3"
             app:destination="@id/perfilFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/mejorValoradoFragment"
+        android:name="com.proyectofinal.redgame.ui.MejorValorados.MejorValoradosFragment"
+        android:label="MejorValorado"
+        tools:layout="@layout/fragment_mejor_valorados" />
+
+
 </navigation>
