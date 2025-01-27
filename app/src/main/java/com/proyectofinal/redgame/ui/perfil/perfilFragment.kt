@@ -207,7 +207,8 @@ class perfilFragment : Fragment() {
                     if (document != null && document.exists()) {
                         // Obtén el campo "nombre_usuario" del documento
                         val username = document.getString("nombre_usuario")
-                        binding.tvNombreUsuario.text = username ?: "Sin nombre de usuario"
+
+                        binding.tvNombreUsuario.text = "Hola, " + username.toString().uppercase() ?: "Sin nombre de usuario"
                     } else {
                         binding.tvNombreUsuario.text = "Usuario no encontrado"
                     }

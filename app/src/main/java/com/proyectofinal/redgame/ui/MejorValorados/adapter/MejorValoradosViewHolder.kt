@@ -22,7 +22,7 @@ class MejorValoradosViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
 
 
-            val plataformNames= gameModel.platforms.joinToString(",") {platform ->
+            val plataformNames= gameModel.platforms?.joinToString(",") { platform ->
                 platform.platform.name
             }
             Toast.makeText(binding.cardViewTodosRecomendacion.context, "Plataformas:" + plataformNames, Toast.LENGTH_SHORT).show()

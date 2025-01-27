@@ -20,7 +20,7 @@ data class GameModel(
     @SerializedName("released") val released: String? = null,
     @SerializedName("background_image") val backgroundImage: String? = null,
     @SerializedName("rating") val rating: Float = 0f,
-    @SerializedName("platforms") val platforms: List<Platform> = emptyList(),
+    @SerializedName("platforms") val platforms: List<Platform>? = emptyList(),
     var isLiked: Boolean = false,
 
     ) {

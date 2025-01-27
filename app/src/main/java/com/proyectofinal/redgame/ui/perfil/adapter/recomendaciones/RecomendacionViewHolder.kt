@@ -20,7 +20,7 @@ class RecomendacionViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
 
 
-                val plataformNames= game.platforms.joinToString(",") {platform ->
+                val plataformNames= game.platforms?.joinToString(",") {platform ->
                     platform.platform.name
                 }
                 Toast.makeText(binding.cardViewRecomendacion.context, "Plataformas:" + plataformNames, Toast.LENGTH_SHORT).show()

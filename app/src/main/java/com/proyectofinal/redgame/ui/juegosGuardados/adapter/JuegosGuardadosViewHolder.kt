@@ -1,5 +1,6 @@
 package com.proyectofinal.redgame.ui.juegosGuardados.adapter
 
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -14,11 +15,13 @@ class JuegosGuardadosViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     val binding = ItemTodosGamesGuardadosBinding.bind(view)
 
-    fun render(gameModel: GameModel, perfilViewModel: PerfilViewModel,compartirViewModel: CompartirViewModel) {
 
+    fun render(gameModel: GameModel, perfilViewModel: PerfilViewModel,compartirViewModel: CompartirViewModel) {
         binding.tvNombreJuego.text = gameModel.name.toString()
         binding.tvValoracion.text = gameModel.rating.toString()
         Glide.with(binding.ivGame.context).load(gameModel.backgroundImage).into(binding.ivGame)
+
+
 
 
 

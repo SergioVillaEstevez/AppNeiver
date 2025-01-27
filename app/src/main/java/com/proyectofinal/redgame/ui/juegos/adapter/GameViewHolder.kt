@@ -37,7 +37,7 @@ class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
 
         binding.ivGame.setOnClickListener {
-            val plataformNames= gameModel.platforms.joinToString(",") {platform ->
+            val plataformNames= gameModel.platforms?.joinToString(",") {platform ->
                 platform.platform.name
             }
             Toast.makeText(binding.ivGame.context,"Plataformas:" + plataformNames, Toast.LENGTH_LONG).show()
