@@ -23,7 +23,7 @@ class CompartirViewModel @Inject  constructor(
 
 ) : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid // Obtener el ID del usuario
+    private val userId = FirebaseAuth.getInstance().currentUser?.email // Obtener el ID del usuario
     private var _likedGame = MutableStateFlow<List<GameModel>>(emptyList())
     val likedGame: StateFlow<List<GameModel>> = _likedGame
 

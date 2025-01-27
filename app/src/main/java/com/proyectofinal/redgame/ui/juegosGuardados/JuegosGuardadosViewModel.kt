@@ -19,7 +19,7 @@ class JuegosGuardadosViewModel @Inject constructor() : ViewModel() {
 
 
     private val db = FirebaseFirestore.getInstance()
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid
+    private val userId = FirebaseAuth.getInstance().currentUser?.email
 
      fun fetchLikedGame(gameViewModel: GameViewModel) {
         viewModelScope.launch {

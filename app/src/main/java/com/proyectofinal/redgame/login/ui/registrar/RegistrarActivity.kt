@@ -124,7 +124,7 @@ class RegistrarActivity : AppCompatActivity() {
 
     private fun createEmptyGamesDocument() {
         // Obtener el UID del usuario autenticado
-        val userUid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        val userUid = FirebaseAuth.getInstance().currentUser?.email ?: ""
 
         if (userUid.isNotEmpty()) {
             val emptyGamesData = mapOf(

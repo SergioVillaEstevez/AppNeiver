@@ -43,7 +43,7 @@ class PerfilViewModel @Inject constructor(
     //private var gameService = GameService()
 
     private val db = FirebaseFirestore.getInstance()
-    private val userId=FirebaseAuth.getInstance().currentUser?.uid
+    private val userId=FirebaseAuth.getInstance().currentUser?.email
 
 
 
